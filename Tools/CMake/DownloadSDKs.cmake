@@ -1,13 +1,13 @@
 if (NOT EXISTS "${CRYENGINE_DIR}/Tools/branch_bootstrap/bootstrap.exe")
     if (OPTION_ENGINE OR NOT PROJECT_BUILD)
+        set(WEB_PATH      "https://s3.cryengine.com/cryengine-content/cryengine-57-lts/sdk")
         set(SDK_ARCHIVE   "CRYENGINE_v5.7.0_SDKs.zip")
-        set(GIT_TAG       "5.7.0")
 
         if(EXISTS "${CRYENGINE_DIR}/${SDK_ARCHIVE}")
             message(STATUS "Using pre-downloaded SDKs: ${SDK_ARCHIVE}")
         else()
             message(STATUS "Downloading SDKs...")
-            file(DOWNLOAD "https://github.com/CRYTEK/CRYENGINE/releases/download/${GIT_TAG}/${SDK_ARCHIVE}"
+            file(DOWNLOAD "${WEB_PATH}/${SDK_ARCHIVE}"
                 "${CRYENGINE_DIR}/${SDK_ARCHIVE}" SHOW_PROGRESS)
 		    set(FORCE_EXTRACT_SDKS 1)
         endif()
