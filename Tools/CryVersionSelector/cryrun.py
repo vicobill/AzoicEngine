@@ -28,6 +28,44 @@ except ImportError:
 
 # --- helpers
 
+def get_available_configs():
+    return [
+        # Visual Studio 15 2017
+        {
+            'title': 'Visual Studio 2017 Win64',
+            'cmake_toolchain': 'toolchain/windows/WindowsPC-MSVC.cmake',
+            'cmake_generator': 'Visual Studio 15 2017 Win64',
+            'cmake_builddir': 'solutions/win64',
+            'compiler': {
+                'reg_key': winreg.HKEY_CLASSES_ROOT,
+                'key_path': r'\VisualStudio.DTE.15.0'
+            }
+        },
+
+        # Visual Studio 16 2019
+        {
+            'title': 'Visual Studio 2019 Win64',
+            'cmake_toolchain': 'toolchain/windows/WindowsPC-MSVC.cmake',
+            'cmake_generator': 'Visual Studio 16 2019',
+            'cmake_builddir': 'solutions/win64',
+            'compiler': {
+                'reg_key': winreg.HKEY_CLASSES_ROOT,
+                'key_path': r'\VisualStudio.DTE.16.0'
+            }
+        },
+
+        # Visual Studio 17 2022
+        {
+            'title': 'Visual Studio 2022 Win64',
+            'cmake_toolchain': 'toolchain/windows/WindowsPC-MSVC.cmake',
+            'cmake_generator': 'Visual Studio 17 2022',
+            'cmake_builddir': 'solutions/win64',
+            'compiler': {
+                'reg_key': winreg.HKEY_CLASSES_ROOT,
+                'key_path': r'\VisualStudio.DTE.17.0'
+            }
+        },
+    ]
 
 def get_project_solution_dir(project_path):
     x64 = os.path.join("Solutions", "win64")
@@ -266,43 +304,7 @@ def generate_project_solution(project_path, cmakelists_dir, open_cmake=False):
     if not HAS_WIN_MODULES:
         error_winreg_not_available()
 
-    configs = [
-        # Visual Studio 15 2017
-        {
-            'title': 'Visual Studio 2017 Win64',
-            'cmake_toolchain': 'toolchain/windows/WindowsPC-MSVC.cmake',
-            'cmake_generator': 'Visual Studio 15 2017 Win64',
-            'cmake_builddir': 'solutions/win64',
-            'compiler': {
-                'reg_key': winreg.HKEY_CLASSES_ROOT,
-                'key_path': r'\VisualStudio.DTE.15.0'
-            }
-        },
-
-        # Visual Studio 16 2019
-        {
-            'title': 'Visual Studio 2019 Win64',
-            'cmake_toolchain': 'toolchain/windows/WindowsPC-MSVC.cmake',
-            'cmake_generator': 'Visual Studio 16 2019',
-            'cmake_builddir': 'solutions/win64',
-            'compiler': {
-                'reg_key': winreg.HKEY_CLASSES_ROOT,
-                'key_path': r'\VisualStudio.DTE.16.0'
-            }
-        },
-
-        # Visual Studio 17 2022
-        {
-            'title': 'Visual Studio 2022 Win64',
-            'cmake_toolchain': 'toolchain/windows/WindowsPC-MSVC.cmake',
-            'cmake_generator': 'Visual Studio 17 2022',
-            'cmake_builddir': 'solutions/win64',
-            'compiler': {
-                'reg_key': winreg.HKEY_CLASSES_ROOT,
-                'key_path': r'\VisualStudio.DTE.17.0'
-            }
-        },
-    ]
+    configs = get_available_configs()
 
     # Run the GUI to select a config for CMake.
     config = cryrun_gui.select_config(configs)
@@ -323,53 +325,7 @@ def generate_engine_solution(engine_path):
     if not HAS_WIN_MODULES:
         error_winreg_not_available()
 
-    configs = [
-        # Visual Studio 14 2015 Express
-        {
-            'title': 'Visual Studio 2015 Express Win64',
-            'cmake_toolchain': 'toolchain/windows/WindowsPC-MSVC.cmake',
-            'cmake_generator': 'Visual Studio 14 2015 Win64',
-            'cmake_builddir': 'solutions/win64',
-            'compiler': {'reg_key': winreg.HKEY_CLASSES_ROOT,
-                         'key_path': r'\WDExpress.DTE.14.0'}
-        },
-
-        # Visual Studio 14 2015
-        {
-            'title': 'Visual Studio 2015 Win64',
-            'cmake_toolchain': 'toolchain/windows/WindowsPC-MSVC.cmake',
-            'cmake_generator': 'Visual Studio 14 2015 Win64',
-            'cmake_builddir': 'solutions/win64',
-            'compiler': {
-                'reg_key': winreg.HKEY_CLASSES_ROOT,
-                'key_path': r'\VisualStudio.DTE.14.0'
-            }
-        },
-
-        # Visual Studio 15 2017
-        {
-            'title': 'Visual Studio 2017 Win64',
-            'cmake_toolchain': 'toolchain/windows/WindowsPC-MSVC.cmake',
-            'cmake_generator': 'Visual Studio 15 2017 Win64',
-            'cmake_builddir': 'solutions/win64',
-            'compiler': {
-                'reg_key': winreg.HKEY_CLASSES_ROOT,
-                'key_path': r'\VisualStudio.DTE.15.0'
-            }
-        },
-
-        # Visual Studio 16 2019
-        {
-            'title': 'Visual Studio 2019 Win64',
-            'cmake_toolchain': 'toolchain/windows/WindowsPC-MSVC.cmake',
-            'cmake_generator': 'Visual Studio 16 2019',
-            'cmake_builddir': 'solutions/win64',
-            'compiler': {
-                'reg_key': winreg.HKEY_CLASSES_ROOT,
-                'key_path': r'\VisualStudio.DTE.16.0'
-            }
-        },
-    ]
+    configs = get_available_configs()
 
     # Run the GUI to select a config for CMake.
     config = cryrun_gui.select_config(configs)
