@@ -303,7 +303,8 @@ template<> struct SParamReader<CAnyArrayPtr>
 	{
 		const SParamBinding& param = binding.params.at(paramIdx);
 		SCHEMATYC_CORE_ASSERT_FATAL(param.flags.Check(EParamFlags::BoundToInput));
-		return DynamicCast<CAnyArrayPtr>(*params.GetInput(CUniqueId::FromUInt32(param.id)));
+		CAnyConstPtr pInput = params.GetInput(CUniqueId::FromUInt32(param.id));
+		return pInput ? DynamicCast<CAnyArrayPtr>(*pInput) : CAnyArrayPtr();
 	}
 };
 
