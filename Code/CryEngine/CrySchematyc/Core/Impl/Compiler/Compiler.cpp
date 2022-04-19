@@ -128,6 +128,21 @@ private:
 };
 } // Anonymous
 
+bool CCompiler::IsValidForLauncher(EMPEnv multiplayerEnv) const
+{
+	switch (multiplayerEnv)
+	{
+	case EMPEnv::ClientOnly:
+		return !gEnv->IsDedicated();
+	case EMPEnv::ClientServer:
+		return true;
+	case EMPEnv::ServerOnly:
+		return gEnv->IsDedicated();
+	}
+
+	return false;
+}
+
 void CCompiler::CompileAll()
 {
 	auto visitScriptElement = [this](IScriptElement& scriptElement) -> EVisitStatus
@@ -370,6 +385,12 @@ bool CCompiler::CompileComponentInstancesRecursive(SCompilerContext& context, CR
 {
 	for (const IScriptElement* pScriptElement = scriptScope.GetFirstChild(); pScriptElement; pScriptElement = pScriptElement->GetNextSibling())
 	{
+		if (!IsValidForLauncher(pScriptElement->GetMPEnv()))
+		{
+			CryLogAlways("[Schematyc]: Component Instance disabled for this environment. '%s::%s'.", runtimeClass.GetName(), pScriptElement->GetName());
+			continue;
+		}
+
 		switch (pScriptElement->GetType())
 		{
 		case EScriptElementType::Base:
@@ -396,6 +417,12 @@ bool CCompiler::CompileElementsRecursive(SCompilerContext& context, CRuntimeClas
 {
 	for (const IScriptElement* pScriptElement = scriptScope.GetFirstChild(); pScriptElement; pScriptElement = pScriptElement->GetNextSibling())
 	{
+		if (!IsValidForLauncher(pScriptElement->GetMPEnv()))
+		{
+			CryLogAlways("[Schematyc]: Element disabled for this environment. '%s::%s'.", runtimeClass.GetName(), pScriptElement->GetName());
+			continue;
+		}
+
 		switch (pScriptElement->GetType())
 		{
 		case EScriptElementType::Constructor:

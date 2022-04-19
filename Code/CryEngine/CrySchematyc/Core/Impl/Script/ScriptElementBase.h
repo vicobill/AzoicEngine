@@ -18,6 +18,7 @@ public:
 
 	inline CScriptElementBase(const ScriptElementFlags& flags = EScriptElementFlags::None)
 		: m_flags(flags)
+		, m_mpEnv(EMPEnv::ClientServer)
 		, m_pScript(nullptr)
 		, m_pParent(nullptr)
 		, m_pFirstChild(nullptr)
@@ -30,6 +31,7 @@ public:
 		: m_guid(guid)
 		, m_name(szName)
 		, m_flags(flags)
+		, m_mpEnv(EMPEnv::ClientServer)
 		, m_pScript(nullptr)
 		, m_pParent(nullptr)
 		, m_pFirstChild(nullptr)
@@ -75,6 +77,11 @@ public:
 	virtual const char* GetName() const override
 	{
 		return m_name.c_str();
+	}
+
+	virtual EMPEnv GetMPEnv() const override
+	{
+		return m_mpEnv;
 	}
 
 	virtual EScriptElementAccessor GetAccessor() const override
@@ -333,6 +340,8 @@ public:
 				break;
 			}
 		}
+
+		GetTypeDesc<EMPEnv>().GetOperators().serialize(archive, &m_mpEnv, GetTypeDesc<EMPEnv>().GetName().c_str(), GetTypeDesc<EMPEnv>().GetLabel());
 	}
 
 	// ~IScriptElement
@@ -351,9 +360,10 @@ protected:
 
 private:
 
-	CryGUID               m_guid;
+	CryGUID             m_guid;
 	string              m_name;
 	ScriptElementFlags  m_flags;
+	EMPEnv              m_mpEnv;
 	IScript*            m_pScript;
 	IScriptElement*     m_pParent;
 	IScriptElement*     m_pFirstChild;

@@ -106,10 +106,11 @@ struct IScriptElement
 	virtual ~IScriptElement() {}
 
 	virtual EScriptElementType         GetType() const = 0;
-	virtual CryGUID                      GetGUID() const = 0;
+	virtual CryGUID                    GetGUID() const = 0;
 
 	virtual void                       SetName(const char* szName) = 0;
 	virtual const char*                GetName() const = 0;
+	virtual EMPEnv                     GetMPEnv() const = 0;
 	virtual EScriptElementAccessor     GetAccessor() const = 0;
 	virtual void                       SetFlags(const ScriptElementFlags& flags) = 0;
 	virtual ScriptElementFlags         GetFlags() const = 0;

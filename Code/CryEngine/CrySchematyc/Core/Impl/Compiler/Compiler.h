@@ -24,6 +24,8 @@ struct SCompilerContext;
 class CRuntimeClass;
 // Forward declare shared pointers.
 DECLARE_SHARED_POINTERS(CRuntimeClass)
+// Forward declare enumerations.
+enum class EMPEnv;
 
 class CCompiler : public ICompiler
 {
@@ -47,6 +49,8 @@ public:
 	// ~ICompiler
 
 private:
+
+	bool IsValidForLauncher(EMPEnv multiplayerEnv) const;
 
 	bool CompileClass(const IScriptClass& scriptClass);
 	bool CompileComponentInstancesRecursive(SCompilerContext& context, CRuntimeClass& runtimeClass, uint32 parentIdx, const IScriptElement& scriptScope) const;

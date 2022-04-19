@@ -104,6 +104,25 @@ enum class EOverridePolicy // #SchematycTODO : Move to IScriptElement.h and rena
 	Final
 };
 
+enum class EMPEnv
+{
+	ClientServer,
+	ClientOnly,
+	ServerOnly
+};
+
+// Reflect 'EMPEnv' enum.
+inline void ReflectType(CTypeDesc<EMPEnv>& desc)
+{
+	desc.SetGUID("1d7358b8-e54d-40ce-8e6c-4061236e021c"_cry_guid);
+	desc.SetLabel("Run on Environment");
+	desc.SetDescription("Specify whether this element is available in either Client, Server, or Both, environments.");
+	desc.SetDefaultValue(EMPEnv::ClientServer);
+	desc.AddConstant(EMPEnv::ClientServer, "clientserver", "Client & Server");
+	desc.AddConstant(EMPEnv::ClientOnly, "client", "Client Only");
+	desc.AddConstant(EMPEnv::ServerOnly, "server", "Server Only");
+}
+
 using ESimulationMode = EEntitySimulationMode;
 
 enum class ObjectId : uint32
