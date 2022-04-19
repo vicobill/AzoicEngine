@@ -38,6 +38,12 @@ CFlashModule* CPlugin_CryScaleformSchematyc::GetFlashModule()
 
 bool CPlugin_CryScaleformSchematyc::Initialize(SSystemGlobalEnvironment& env, const SSystemInitParams& initParams)
 {
+	if (gEnv->IsDedicated())
+	{
+		CryWarning(VALIDATOR_MODULE_SYSTEM, VALIDATOR_WARNING, "[CryScaleformSchematyc] Init Failed. Dedicated server instances are not supported.");
+		return false;
+	}
+
 	// Register for engine system events, we need to register the Schematyc components at the right time
 	gEnv->pSystem->GetISystemEventDispatcher()->RegisterListener(this, "CPlugin_CryScaleformSchematyc");
 

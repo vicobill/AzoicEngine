@@ -126,7 +126,7 @@ void CFlashModule::RegisterDynamicComponents(Schematyc::CEnvRegistrationScope& p
 		pDesc->SetName(typeName);
 		pDesc->SetLabel(componentName.c_str());
 		pDesc->SetEditorCategory("FlashUI");
-		pDesc->SetComponentFlags({ IEntityComponent::EFlags::HideFromInspector, IEntityComponent::EFlags::Singleton });
+		pDesc->SetComponentFlags({ IEntityComponent::EFlags::HideFromInspector, IEntityComponent::EFlags::Singleton, IEntityComponent::EFlags::ClientOnly });
 		
 		// Create the component and place it under the package scope
 		auto pComponent = EnvFlashComponent::MakeShared<CFlashUIComponent>(std::move(typeName), *pDesc, SCHEMATYC_SOURCE_FILE_INFO);
