@@ -26,6 +26,12 @@
                             "url": "https://download.visualstudio.microsoft.com/download/pr/b6a85ca1-3add-4391-9d24-27fea671c700/ea7ec3e24daf9852dabe671a8c8b7131/vs_community.exe",
                             "localdir": "C:/Program Files (x86)/Microsoft Visual Studio/2019",
                             "registryKey": "HKEY_CLASSES_ROOT\\VisualStudio.DTE.16.0"
+                        },
+                        {
+                            "name": "2022",
+                            "url": "https://c2rsetup.officeapps.live.com/c2r/downloadVS.aspx?sku=community&channel=Release&version=VS2022",
+                            "localdir": "C:/Program Files/Microsoft Visual Studio/2022",
+                            "registryKey": "HKEY_CLASSES_ROOT\\VisualStudio.DTE.17.0"
                         }
                     ]
                 },
@@ -63,9 +69,9 @@
                     "website": "https://developer.microsoft.com/en-us/windows/downloads/sdk-archive",
                     "versions": [
                         {
-                            "name": "10.0.16299.0",
-                            "url": "https://download.microsoft.com/download/8/C/3/8C37C5CE-C6B9-4CC8-8B5F-149A9C976035/windowssdk/winsdksetup.exe",
-                            "localdir": "C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0"
+                            "name": "10.0.20348.0",
+                            "url": "https://download.microsoft.com/download/9/7/9/97982c1d-d687-41be-9dd3-6d01e52ceb68/windowssdk/winsdksetup.exe",
+                            "localdir": "C:/Program Files (x86)/Windows Kits/10/bin/10.0.20348.0"
                         }
                     ]
                 }
