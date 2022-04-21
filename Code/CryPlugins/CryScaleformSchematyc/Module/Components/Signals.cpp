@@ -61,12 +61,14 @@ void RegisterElementEvents(Schematyc::CEnvRegistrationScope& scope, IUIElement* 
 				typeDesc->AddMember(static_cast<ptrdiff_t>(accumulatedSize), accumulatedSize, param.sName, param.sDisplayName, param.sDesc, 0.f);
 				accumulatedSize += sizeof(float);
 				break;
+
+			default:
+				CryWarning(VALIDATOR_MODULE_SYSTEM, VALIDATOR_WARNING, "Flash Event Parameter type is not a supported Dynamic Type. Event: '%s'. Type: '%d'", param.sName, param.eType);
+				[[fallthrough]];
 			case EDynamicType::String:
 				typeDesc->AddMember<Schematyc::CSharedString>(static_cast<ptrdiff_t>(accumulatedSize), accumulatedSize, param.sName, param.sDisplayName, param.sDesc, "");
 				accumulatedSize += sizeof(Schematyc::CSharedString);
 				break;
-			default:
-				CryFatalError("Flash Event Parameter type is not a supported Dynamic Type. Event: '%s'. Type: '%d'", param.sName, param.eType);
 			}
 		}
 

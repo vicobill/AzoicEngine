@@ -94,10 +94,17 @@ void RegisterDynamicFunctions(Schematyc::CEnvRegistrationScope& scope, IUIElemen
 		pFunction->BindInput(paramIndex++, 'iid', "InstanceId", "Element Instance Id.", uint32(0));
 		
 		// We go through every described parameter here for the function
-		for (const auto inputParam : pFunctionDesc->InputParams.Params)
+		for (const SUIParameterDesc& inputParam : pFunctionDesc->InputParams.Params)
 		{
+			EDynamicType paramType = GetDynTypeFromFlash(inputParam.eType);
+			if (paramType == EDynamicType::Any)
+			{
+				paramType = EDynamicType::String;
+				CryWarning(VALIDATOR_MODULE_SYSTEM, VALIDATOR_WARNING, "Any types are not supported in ScaleformSchematyc plugin. '%s' parameter treated as String.", inputParam.sName);
+			}
+
 			pFunction->BindInput(
-				GetDynTypeFromFlash(inputParam.eType),
+				paramType,
 				paramIndex, paramIndex, inputParam.sDisplayName, inputParam.sDesc);
 			++paramIndex;
 		}
