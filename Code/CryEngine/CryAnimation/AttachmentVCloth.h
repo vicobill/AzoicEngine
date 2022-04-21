@@ -455,6 +455,7 @@ private:
 	std::vector<Matrix33>     m_vtxNeighbCmtx;
 	Vec3                      m_wind = Vec3(ZERO);
 	int                       m_windCheckTimer = 0;
+	Vec3                      m_velGlobal = Vec3(ZERO);
 
 	std::vector<SCollidable>  m_permCollidables; //!< list of collision proxies (no collision with the world)
 

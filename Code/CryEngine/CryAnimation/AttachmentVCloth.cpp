@@ -1102,6 +1102,9 @@ bool CClothSimulator::IsVisible()
 
 void CClothSimulator::StartStep(float time_interval, const QuatT& location)
 {
+	Vec3 vel = (location.t-m_location.t).len2() > 25 ? Vec3(ZERO) : (location.t-m_location.t)/max(time_interval,0.002f);
+	float k = min(1.0f, time_interval*10);
+	m_velGlobal = m_velGlobal*(1-k) + vel*k;
 	m_location = location;
 
 	m_time = time_interval - m_config.timeStep; // m_time = time_interval would mean simulating subStepTime01 = 0 - All Interpolations would be the same like the step before with subStepTime01 = 1.0
@@ -1872,7 +1875,7 @@ void CClothSimulator::PositionsIntegrate()
 			}
 			m_windCheckTimer = 10 + cry_random(0, 20); // randomize check time to spread out the load
 		}
-		if ((useWind = (wind = m_wind / m_dtNormalize).len2()))
+		if ((useWind = (wind = (m_wind-m_velGlobal) / m_dtNormalize).len2()))
 		{
 			windNorm = wind.GetNormalized();
 			// compute normal and 'windage' for each vertex	by sampling points along outgoing edges at dixed distance (1)
