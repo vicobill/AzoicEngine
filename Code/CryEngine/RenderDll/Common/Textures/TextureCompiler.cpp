@@ -42,10 +42,12 @@ bool IsAlias(const char* szFilename)
 //////////////////////////////////////////////////////////////////////////
 CTextureCompiler::CTextureCompiler()
 {
+	m_enableJobs = true;
 }
 
 CTextureCompiler::~CTextureCompiler()
 {
+	Shutdown();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -598,6 +600,9 @@ bool CTextureCompiler::HasQueuedResourceCompiler(const char* szSrcFile, const ch
 
 CResourceCompilerHelper::ERcCallResult CTextureCompiler::QueueResourceCompiler(const char* szSrcFile, const char* szDstFile, const bool bWindow, const bool bRefresh)
 {
+	if (!m_enableJobs)
+		return eRcCallResult_error;
+
 	if (AddToWatchList(szDstFile, szSrcFile))
 	{
 		ForkOffResourceCompiler(szSrcFile, szDstFile, bWindow, bRefresh);
@@ -685,7 +690,7 @@ void CTextureCompiler::ForkOffResourceCompiler(const char* szSrcFile, const char
 		TAsyncResourceCompilerJob compileJob(&addedrc);
 
 		compileJob.SetClassInstance(&CTextureCompiler::GetInstance());
-		compileJob.Run();
+		compileJob.Run(&m_jobState);
 	}
 }
 
@@ -986,6 +991,19 @@ CTextureCompiler::EResult CTextureCompiler::ProcessTextureIfNeeded(
 
 	// rc didn't fail
 	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////
+void CTextureCompiler::Shutdown()
+{
+	if (m_jobState.IsRunning())
+	{
+		// Wait for any pending tasks
+		m_jobState.Wait();
+	}
+
+	// Disable Jobs
+	m_enableJobs = false;
 }
 
 //////////////////////////////////////////////////////////////////////////

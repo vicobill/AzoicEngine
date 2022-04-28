@@ -136,9 +136,9 @@ void CMatInfo::Release()
 {
 	if (CryInterlockedDecrement(&m_nRefCount) == 0)
 	{
-		if (GetMatMan())
+		if (GetMatMan() && GetMatMan()->m_bInitialized)
 		{
-			((CMatMan*)GetMatMan())->DelayedDelete(this);
+			GetMatMan()->DelayedDelete(this);
 		}
 		else
 		{

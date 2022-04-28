@@ -1114,6 +1114,10 @@ void CRenderer::FreeSystemResources(int nFlags)
 	{
 		CRenderMesh::ClearJobResources();
 
+#if defined(CRY_ENABLE_RC_HELPER)
+		CTextureCompiler::GetInstance().Shutdown();
+#endif
+
 		// Free sprite vertices (indices are packed into the same buffer so no need to free them explicitly);
 		CryModuleMemalignFree(m_pSpriteVerts);
 		m_pSpriteVerts = NULL;
@@ -1123,6 +1127,7 @@ void CRenderer::FreeSystemResources(int nFlags)
 		{
 			m_p3DEngineCommon[i].m_RainOccluders.Release();
 			m_p3DEngineCommon[i].m_CausticInfo.Release();
+			m_p3DEngineCommon[i].m_SkyInfo.Release();
 		}
 
 		for (uint i = 0; i < CLightStyle::s_LStyles.Num(); i++)

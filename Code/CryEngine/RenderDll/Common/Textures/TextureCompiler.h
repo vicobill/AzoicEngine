@@ -55,6 +55,9 @@ public:
 	  size_t processedFilenameSizeInBytes,
 	  bool immediate = true);
 
+	// Waits for job task and disables jobs in TC
+	void Shutdown();
+
 private:
 	class CQueuedRC
 	{
@@ -101,6 +104,9 @@ private:
 	CryRWLock      m_rwLockWatch;
 	CryRWLock      m_rwLockProcessing;
 	CryRWLock      m_rwLockNotify;
+
+	bool           m_enableJobs;
+	JobManager::SJobState m_jobState;
 
 	void*          m_jobqueue;
 

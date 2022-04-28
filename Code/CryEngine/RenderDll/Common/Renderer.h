@@ -443,6 +443,12 @@ struct SSkyInfo
 
 	_smart_ptr<IMaterial> m_pSkyMaterial;
 	_smart_ptr<CTexture>  m_pSkyBoxTexture;
+
+	~SSkyInfo() { Release(); }
+	void Release()
+	{
+		m_pSkyMaterial = nullptr;
+	}
 };
 
 struct SVisAreaInfo
