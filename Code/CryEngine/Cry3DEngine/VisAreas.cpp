@@ -818,11 +818,16 @@ bool CVisArea::IsPortalIntersectAreaInValidWay(CVisArea* pPortal) const
  */
 bool CVisArea::IsShapeClockwise() const
 {
-	float fClockWise =
-	  (m_lstShapePoints[0].x - m_lstShapePoints[1].x) * (m_lstShapePoints[2].y - m_lstShapePoints[1].y) -
-	  (m_lstShapePoints[0].y - m_lstShapePoints[1].y) * (m_lstShapePoints[2].x - m_lstShapePoints[1].x);
+	float clockWise = 0;
+	int numPoints = m_lstShapePoints.size();
 
-	return fClockWise > 0;
+	for (int i = 0; i < numPoints - 1; ++i)
+	{
+		clockWise += (m_lstShapePoints[i + 1].x - m_lstShapePoints[i].x) * (m_lstShapePoints[i + 1].y + m_lstShapePoints[i].y);
+	}
+	clockWise += (m_lstShapePoints[0].x - m_lstShapePoints[numPoints - 1].x) * (m_lstShapePoints[0].y + m_lstShapePoints[numPoints - 1].y);
+
+	return clockWise > 0;
 }
 
 void CVisArea::DrawAreaBoundsIntoCBuffer(CCullBuffer* pCBuffer)
@@ -1282,9 +1287,10 @@ void CVisArea::UpdateClipVolume()
 	triangulationPoints.resize(nPoints + 1);
 	MARK_UNUSED triangulationPoints[nPoints].x;
 
+	bool isCW = IsShapeClockwise();
 	for (int i = 0; i < nPoints; ++i)
 	{
-		int nPointIdx = IsShapeClockwise() ? nPoints - 1 - i : i;
+		int nPointIdx = isCW ? nPoints - 1 - i : i;
 
 		vertices[i].xyz = m_lstShapePoints[nPointIdx];
 		vertices[i].color.dcolor = 0xFFFFFFFF;
