@@ -244,7 +244,7 @@ void CDeferredDecalsStage::SetupDecalPrimitive(const SDeferredDecal& decal, CRen
 		const float texScale = max(
 			texMatrix.GetColumn(0).GetLength() * decal.rectTexture.w,
 			texMatrix.GetColumn(1).GetLength() * decal.rectTexture.h);
-		const float mipLevelFactor = (tan(viewInfo[0].pCamera->GetFov()) * texScale / decalSize) / screenRes;
+		const float mipLevelFactor = (tan(viewInfo[0].pCamera->GetFov() * 0.5f) * texScale / decalSize) / screenRes;
 
 		Vec4 vMipLevels;
 		vMipLevels.x = pDiffuseMap ? mipLevelFactor * (float)max(pDiffuseMap->GetWidth(), pDiffuseMap->GetHeight()) : 0.0f;
