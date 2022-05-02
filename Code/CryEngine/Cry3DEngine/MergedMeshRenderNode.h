@@ -605,7 +605,7 @@ class CMergedMeshesManager
 
 	typedef std::vector<CMergedMeshRenderNode*>                                       NodeListT;
 	typedef std::vector<CMergedMeshRenderNode*>                                       NodeArrayT;
-	typedef std::vector<std::pair<CMergedMeshRenderNode*, const SRenderingPassInfo&>> PostNodeArrayT;
+	typedef std::vector<std::pair<CMergedMeshRenderNode*, const SRenderingPassInfo>>  PostNodeArrayT;
 	typedef std::vector<SProjectile>                                                  ProjectileArrayT;
 	typedef DynArray<SInstanceSector>                                                 InstanceSectors;
 
