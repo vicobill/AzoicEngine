@@ -883,12 +883,11 @@ void CVolumetricCloudsStage::Execute()
 				pass.SetTexture(1, context.scaledZTarget);
 				pass.SetTexture(2, currMaxTex);
 				pass.SetTexture(3, currMinTex);
+				pass.SetTexture(4, m_pCloudDepthTex);
 
 				pass.SetSampler(0, EDefaultSamplerStates::PointClamp);
 
 #ifdef ENABLE_FULL_SIZE_FOG
-				pass.SetTexture(4, m_pCloudDepthTex);
-
 				if (context.bVolumetricFog)
 				{
 					pVolFogStage->BindVolumetricFogResources(pass, 9, 2);
