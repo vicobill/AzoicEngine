@@ -87,7 +87,7 @@ void CSnowStage::ResizeResource(int resourceWidth, int resourceHeight)
 
 	const uint32 flags = FT_NOMIPS | FT_DONT_STREAM | FT_USAGE_RENDERTARGET;
 
-	m_pSnowDisplacementTex = CTexture::GetOrCreateTextureObjectPtr("$SnowDisplacement", resourceWidth, resourceHeight, 1, eTT_2D, flags, eTF_R8);
+	m_pSnowDisplacementTex = CTexture::GetOrCreateTextureObjectPtr("$SnowDisplacement", resourceWidth, resourceHeight, 1, eTT_2D, flags, eTF_R8G8B8A8);
 	if (m_pSnowDisplacementTex)
 	{
 		const bool shouldApplyDisplacement = (CRenderer::CV_r_snow > 0) && (CRenderer::CV_r_snow_displacement > 0);
@@ -107,8 +107,8 @@ void CSnowStage::Resize(int renderWidth, int renderHeight)
 
 void CSnowStage::OnCVarsChanged(const CCVarUpdateRecorder& cvarUpdater)
 {
-	auto pVar1 = cvarUpdater.GetCVar("r_snow");
-	auto pVar2 = cvarUpdater.GetCVar("r_snow_displacement");
+	auto pVar1 = cvarUpdater.GetCVar("r_Snow");
+	auto pVar2 = cvarUpdater.GetCVar("r_SnowDisplacement");
 	if (pVar1 || pVar2)
 	{
 		const bool enabled = CRendererCVars::IsSnowEnabled();
@@ -358,6 +358,7 @@ void CSnowStage::ExecuteDeferredSnowDisplacement()
 		{
 			static CCryNameTSCRC techName = "ParallaxMapMin";
 			pass.SetTechnique(CShaderMan::s_ShaderDeferredSnow, techName, 0);
+			pass.SetPrimitiveFlags(CRenderPrimitive::eFlags_None);
 			pass.SetPrimitiveType(CRenderPrimitive::ePrim_ProceduralTriangle);
 
 			pass.SetState(GS_NODEPTHTEST);

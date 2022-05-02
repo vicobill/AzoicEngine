@@ -45,7 +45,7 @@ public:
 	void Execute();
 
 	bool IsDeferredSnowEnabled() const             { return CRendererCVars::IsSnowEnabled() && gcpRendD3D->m_bDeferredSnowEnabled; }
-	bool IsDeferredSnowDisplacementEnabled() const { return CRendererCVars::IsSnowEnabled() && CRendererCVars::CV_r_snow_displacement && gcpRendD3D->m_bDeferredSnowEnabled; }
+	bool IsDeferredSnowDisplacementEnabled() const { return CRendererCVars::IsSnowEnabled() && CRendererCVars::CV_r_snow_displacement && gcpRendD3D->m_bDeferredSnowEnabled && CTexture::IsTextureExist(m_pSnowDisplacementTex); }
 
 private:
 	// Snow particle properties
