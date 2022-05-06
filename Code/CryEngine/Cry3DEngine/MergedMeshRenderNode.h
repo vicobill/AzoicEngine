@@ -274,6 +274,12 @@ class CMergedMeshRenderNode final
 	// Does the mesh need a dynamic mesh update
 	unsigned int m_needsDynamicMeshUpdate : 1;
 
+	// Is the mesh needs a static mesh update
+	unsigned int m_needsPostRenderStatic : 1;
+
+	// Is the mesh needs a static mesh update
+	unsigned int m_needsPostRenderDynamic : 1;
+
 	// If the mesh owns its groups
 	unsigned int m_ownsGroups : 1;
 
@@ -603,11 +609,10 @@ class CMergedMeshesManager
 
 	enum { HashDimXY = 32, HashDimZ = 2, MaxProjectiles = 1024, MaxUnloadFrames = 128 };
 
-	typedef std::vector<CMergedMeshRenderNode*>                                       NodeListT;
-	typedef std::vector<CMergedMeshRenderNode*>                                       NodeArrayT;
-	typedef std::vector<std::pair<CMergedMeshRenderNode*, const SRenderingPassInfo>>  PostNodeArrayT;
-	typedef std::vector<SProjectile>                                                  ProjectileArrayT;
-	typedef DynArray<SInstanceSector>                                                 InstanceSectors;
+	typedef std::vector<CMergedMeshRenderNode*> NodeListT;
+	typedef std::vector<CMergedMeshRenderNode*> NodeArrayT;
+	typedef std::vector<SProjectile>            ProjectileArrayT;
+	typedef DynArray<SInstanceSector>           InstanceSectors;
 
 	// For tracking fast moving projectiles
 	static int OnPhysPostStep(const EventPhys*);
@@ -616,7 +621,7 @@ class CMergedMeshesManager
 	NodeArrayT       m_ActiveNodes;
 	NodeArrayT       m_StreamedOutNodes;
 	NodeArrayT       m_VisibleNodes;
-	PostNodeArrayT   m_PostRenderNodes;
+	NodeArrayT       m_PostRenderNodes;
 	ProjectileArrayT m_Projectiles;
 	InstanceSectors  m_InstanceSectors;
 	volatile int     m_ProjectileLock;
@@ -688,7 +693,7 @@ public:
 	void                   RemoveMergedMesh(CMergedMeshRenderNode*);
 
 	void                   PostRenderMeshes(const SRenderingPassInfo& passInfo);
-	void                   RegisterForPostRender(CMergedMeshRenderNode*, const SRenderingPassInfo&);
+	void                   RegisterForPostRender(CMergedMeshRenderNode*);
 
 	// Called once a frame
 	void   Update(const SRenderingPassInfo& passInfo);

@@ -1985,6 +1985,8 @@ CMergedMeshRenderNode::CMergedMeshRenderNode()
 	, m_nVisible()
 	, m_needsStaticMeshUpdate()
 	, m_needsDynamicMeshUpdate()
+	, m_needsPostRenderStatic()
+	, m_needsPostRenderDynamic()
 	, m_ownsGroups(1)
 	, m_State(INITIALIZED)
 	, m_RenderMode(NOT_VISIBLE)
@@ -2720,6 +2722,17 @@ void CMergedMeshRenderNode::Render(const struct SRendParams& EntDrawParams, cons
 	int nLod = 0;
 	uint32 lodFrequency[] = { 3, 5, 7, 11 };
 
+	if (!passInfo.IsGeneralPass())
+	{
+		if (sqDistanceToBox < sqDiagonalInternal)
+		{
+			float len = (passInfo.GetCamera().GetPosition() - m_pos).len();
+			if (GroupsCastShadows(RUT_STATIC)) RenderRenderMesh(RUT_STATIC, len, passInfo);
+			if (GroupsCastShadows(RUT_DYNAMIC)) RenderRenderMesh(RUT_DYNAMIC, len, passInfo);
+		}
+		return;
+	}
+
 	m_rendParams = EntDrawParams;
 	bool switched = false;
 	if ((passInfo.IsZoomInProgress() || passInfo.IsZoomActive() || sqDistanceToBox < sqDiagonalInternal) && m_SpinesActive)
@@ -2810,6 +2823,7 @@ void CMergedMeshRenderNode::Render(const struct SRendParams& EntDrawParams, cons
 					if (dispatched)
 					{
 						m_needsDynamicMeshUpdate = true;
+						m_needsPostRenderDynamic = true;
 						requiresPostRender = true;
 					}
 				}
@@ -2844,9 +2858,11 @@ static_fallthrough:
 						{
 						case RUT_STATIC:
 							m_needsStaticMeshUpdate = true;
+							m_needsPostRenderStatic = true;
 							break;
 						case RUT_DYNAMIC:
 							m_needsDynamicMeshUpdate = true;
+							m_needsPostRenderDynamic = true;
 							break;
 						}
 						requiresPostRender = true;
@@ -2871,7 +2887,7 @@ static_fallthrough:
 		break;
 	}
 	if (requiresPostRender)
-		Cry3DEngineBase::m_pMergedMeshesManager->RegisterForPostRender(this, passInfo);
+		Cry3DEngineBase::m_pMergedMeshesManager->RegisterForPostRender(this);
 }
 
 bool CMergedMeshRenderNode::GroupsCastShadows(RENDERMESH_UPDATE_TYPE type)
@@ -3014,16 +3030,17 @@ bool CMergedMeshRenderNode::PostRender(const SRenderingPassInfo& passInfo)
 	// Check tempData in case object was validated before
 	Get3DEngine()->CheckAndCreateRenderNodeTempData(this, passInfo);
 
-	if(passInfo.IsGeneralPass() || (passInfo.IsShadowPass() && GroupsCastShadows(RUT_STATIC)))
+	if (m_needsPostRenderStatic)
 	{
 		CRY_PROFILE_SECTION(PROFILE_3DENGINE,"MMRM PR RR static");
 		RenderRenderMesh(RUT_STATIC, distance, passInfo);
+		m_needsPostRenderStatic = false;
 	}
-
-	if (passInfo.IsGeneralPass() || (passInfo.IsShadowPass() && GroupsCastShadows(RUT_DYNAMIC)))
+	if (m_needsPostRenderDynamic)
 	{
 		CRY_PROFILE_SECTION(PROFILE_3DENGINE,"MMRM PR RR dynamic");
 		RenderRenderMesh(RUT_DYNAMIC, distance, passInfo);
+		m_needsPostRenderDynamic = false;
 	}
 	return false;
 }
@@ -4586,10 +4603,10 @@ skip:
 	return 1;
 }
 
-void CMergedMeshesManager::RegisterForPostRender(CMergedMeshRenderNode* node, const SRenderingPassInfo& passInfo)
+void CMergedMeshesManager::RegisterForPostRender(CMergedMeshRenderNode* node)
 {
 	assert(node);
-	m_PostRenderNodes.emplace_back(node, passInfo);
+	m_PostRenderNodes.push_back(node);
 }
 
 void CMergedMeshesManager::PostRenderMeshes(const SRenderingPassInfo& passInfo)
@@ -4598,11 +4615,11 @@ void CMergedMeshesManager::PostRenderMeshes(const SRenderingPassInfo& passInfo)
 
 	size_t num_nodes = m_PostRenderNodes.size();
 	for (size_t i = 0; i < num_nodes; ++i)
-		m_PostRenderNodes[i].first->SampleWind();
+		m_PostRenderNodes[i]->SampleWind();
 	for (size_t i = 0; i < num_nodes; ++i)
-		m_PostRenderNodes[i].first->QueryColliders();
+		m_PostRenderNodes[i]->QueryColliders();
 	for (size_t i = 0; i < num_nodes; ++i)
-		m_PostRenderNodes[i].first->QueryProjectiles();
+		m_PostRenderNodes[i]->QueryProjectiles();
 
 	// Perform the post render
 	do
@@ -4610,11 +4627,11 @@ void CMergedMeshesManager::PostRenderMeshes(const SRenderingPassInfo& passInfo)
 		bool done = true;
 		for (size_t i = 0; i < m_PostRenderNodes.size(); ++i)
 		{
-			IF (m_PostRenderNodes[i].first == NULL, 1)
+			IF (m_PostRenderNodes[i] == NULL, 1)
 				continue;
-			if (m_PostRenderNodes[i].first->PostRender(m_PostRenderNodes[i].second) == false)
+			if (m_PostRenderNodes[i]->PostRender(passInfo) == false)
 			{
-				m_PostRenderNodes[i].first = NULL;
+				m_PostRenderNodes[i] = NULL;
 				continue;
 			}
 			done = false;
