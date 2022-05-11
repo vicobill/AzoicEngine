@@ -247,6 +247,7 @@ private:
 
 	TSortedElementList    m_sortedElements;
 	bool                  m_bSortedElementsInvalidated;
+	bool                  m_bLoadTimeElementsInvalidated;
 
 	bool                  m_bLoadtimeThread;
 	typedef std::vector<std::shared_ptr<IFlashPlayer>> TPlayerList;

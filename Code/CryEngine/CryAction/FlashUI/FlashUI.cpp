@@ -61,6 +61,7 @@ CFlashUI::CFlashUI()
 	, m_iHeight(1)
 	, m_bLoadtimeThread(false)
 	, m_bSortedElementsInvalidated(true)
+	, m_bLoadTimeElementsInvalidated(true)
 	, m_ScreenSizeCB(NULL)
 	, m_LogCallback(NULL)
 	, m_plattformCallback(NULL)
@@ -342,6 +343,7 @@ void CFlashUI::Update(float fDeltaTime)
 void CFlashUI::InvalidateSortedElements()
 {
 	m_bSortedElementsInvalidated = true;
+	m_bLoadTimeElementsInvalidated = true;
 }
 
 //------------------------------------------------------------------------------------
@@ -590,8 +592,8 @@ void CFlashUI::OnLoadingProgress(ILevelInfo* pLevel, int progressAmount)
 void CFlashUI::LoadtimeUpdate(float fDeltaTime)
 {
 	CRY_PROFILE_FUNCTION(PROFILE_LOADING_ONLY)
-
-	if (m_bSortedElementsInvalidated)
+	
+	if (m_bSortedElementsInvalidated && m_bLoadTimeElementsInvalidated)
 	{
 		m_loadtimePlayerList.clear();
 
@@ -605,7 +607,7 @@ void CFlashUI::LoadtimeUpdate(float fDeltaTime)
 			}
 		}
 
-		m_bSortedElementsInvalidated = false;
+		m_bLoadTimeElementsInvalidated = false;
 	}
 
 	for (TPlayerList::const_iterator it = m_loadtimePlayerList.begin(); it != m_loadtimePlayerList.end(); ++it)
@@ -1526,9 +1528,17 @@ void CFlashUI::StopRenderThread()
 	if (m_bLoadtimeThread == true)
 	{
 		gEnv->pRenderer->StopLoadtimeFlashPlayback();
+		
+		// Reset clear flags
+		for (auto p : m_loadtimePlayerList)
+		{
+			p->SetClearFlags(0);
+		}
+
 		m_loadtimePlayerList.clear();
 		gEnv->pCryPak->LockReadIO(false);
 		m_bLoadtimeThread = false;
+		
 		UIACTION_LOG("Loadtime Render Thread: Stopped");
 	}
 }
