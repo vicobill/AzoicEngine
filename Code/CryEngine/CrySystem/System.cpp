@@ -1515,11 +1515,7 @@ void CSystem::RunMainLoop()
 #if CRY_PLATFORM_WINDOWS
 	if (!(gEnv && m_env.pSystem) || (!m_env.IsEditor() && !m_env.IsDedicated()))
 	{
-		if (m_env.pHardwareMouse != nullptr)
-		{
-			m_env.pHardwareMouse->DecrementCounter();
-		}
-		else
+		if (m_env.pHardwareMouse == nullptr)
 		{
 			::ShowCursor(FALSE);
 		}

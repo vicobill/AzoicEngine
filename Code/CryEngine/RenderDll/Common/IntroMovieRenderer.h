@@ -27,7 +27,7 @@ public:
 
 	// ILoadtimeCallback
 	virtual void LoadtimeUpdate(float deltaTime);
-	virtual void LoadtimeRender();
+	virtual bool LoadtimeRender();
 	// ~ILoadtimeCallback
 
 	// IFSCommandHandler

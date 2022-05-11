@@ -103,6 +103,9 @@ public:
 	virtual ETEX_Format    GetColorFormat() const            { return CRendererResources::GetDisplayFormat(); }
 	ETEX_Format            GetDepthFormat() const            { return CRendererResources::GetDepthFormat(); }
 
+	ColorF               GetColorClear() const { return m_desc.clearColor; }
+	ColorF               GetDepthClear() const { return m_desc.clearDepthStencil; }
+
 	// Get a temporary texture pointer (only valid for some short-lived scope
 	CTexture* GetCurrentColorOutput() const
 	{

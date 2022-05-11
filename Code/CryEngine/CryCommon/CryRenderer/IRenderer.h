@@ -753,7 +753,7 @@ struct IRendererEventListener
 struct ILoadtimeCallback
 {
 	virtual void LoadtimeUpdate(float fDeltaTime) = 0;
-	virtual void LoadtimeRender() = 0;
+	virtual bool LoadtimeRender() = 0;
 	virtual ~ILoadtimeCallback(){}
 };
 
@@ -1093,6 +1093,9 @@ struct IRenderer//: public IRendererCallbackServer
 
 	//! Should be called at the beginning of every frame.
 	virtual void FillFrame(ColorF clearColor) = 0;
+
+	//! Should be called when idling on no other content.
+	virtual void SplashFrame(ColorF clearColor, ITexture* splashTexture) = 0;
 
 	//! Creates default system shaders and textures.
 	virtual void InitSystemResources(int nFlags) = 0;

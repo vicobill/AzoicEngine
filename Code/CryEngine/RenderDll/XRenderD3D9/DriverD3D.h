@@ -263,6 +263,10 @@ public:
 
 	virtual void RT_RenderDebug(bool bRenderStats = true) final;
 
+	virtual void RT_SplashFast(ColorF clearColor, ITexture* splashTexture) final;
+	virtual void RT_SplashFast() final;
+	virtual void RT_ClearFast(ColorF clearColor) final;
+	virtual void RT_ClearFast() final;
 	virtual void RT_PresentFast() final;
 
 	//===============================================================================
@@ -297,6 +301,7 @@ public:
 
 	virtual void BeginFrame(const SDisplayContextKey& displayContextKey, const SGraphicsPipelineKey& graphicsPipelineKey) override;
 	virtual void FillFrame(ColorF clearColor) override;
+	virtual void SplashFrame(ColorF clearColor, ITexture* splashTexture) override;
 	virtual void ShutDown(bool bReInit = false) override;
 	virtual void ShutDownFast() override;
 	virtual void RenderDebug(bool bRenderStats = true) override;

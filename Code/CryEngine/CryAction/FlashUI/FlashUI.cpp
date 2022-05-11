@@ -600,7 +600,7 @@ void CFlashUI::LoadtimeUpdate(float fDeltaTime)
 			IUIElementIteratorPtr instances = (*iter)->GetInstances();
 			while (IUIElement* pInstance = instances->Next())
 			{
-				if (pInstance->IsVisible())
+				if (pInstance->IsVisible() && pInstance->HasFlag(IUIElement::eFUI_SHOW_AT_LOADING_TIME))
 					m_loadtimePlayerList.emplace_back(pInstance->GetFlashPlayer());
 			}
 		}
@@ -615,16 +615,14 @@ void CFlashUI::LoadtimeUpdate(float fDeltaTime)
 }
 
 //------------------------------------------------------------------------------------
-void CFlashUI::LoadtimeRender()
+bool CFlashUI::LoadtimeRender()
 {
 	CRY_PROFILE_FUNCTION(PROFILE_LOADING_ONLY)
 
 	if (CV_gfx_draw == 1)
 	{
-		IStereoRenderer* stereoRenderer = gEnv->pRenderer->GetIStereoRenderer();
-
-		if (stereoRenderer->GetStereoEnabled())
-			stereoRenderer->PrepareFrame();
+		if (m_loadtimePlayerList.empty())
+			return false;
 
 		for (auto& pFlashPlayer : m_loadtimePlayerList)
 		{
@@ -632,14 +630,9 @@ void CFlashUI::LoadtimeRender()
 			p->SetClearFlags(FRT_CLEAR_COLOR, Clr_Transparent);
 			gEnv->pRenderer->FlashRenderPlayer(std::move(p));
 		}
-
-		if (stereoRenderer->GetStereoEnabled())
-		{
-			if (!stereoRenderer->IsMenuModeEnabled())
-				stereoRenderer->DisplaySocialScreen();
-			stereoRenderer->SubmitFrameToHMD();
-		}
 	}
+
+	return true;
 }
 
 //------------------------------------------------------------------------------------

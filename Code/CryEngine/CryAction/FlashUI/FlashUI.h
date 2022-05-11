@@ -152,7 +152,7 @@ public:
 
 	// ILoadtimeCallback
 	virtual void LoadtimeUpdate(float fDeltaTime) override;
-	virtual void LoadtimeRender() override;
+	virtual bool LoadtimeRender() override;
 	// ~ILoadtimeCallback
 
 	// logging

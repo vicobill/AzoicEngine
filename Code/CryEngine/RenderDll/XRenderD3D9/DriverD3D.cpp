@@ -882,7 +882,7 @@ void CD3D9Renderer::FillFrame(ColorF clearColor)
 
 	m_pRT->ExecuteRenderThreadCommand([=]
 	{
-		PROFILE_FRAME(RT_FillFrame);
+		PROFILE_FRAME(RT_ClearFast);
 
 		pDisplayContext->GetCurrentBackBuffer()->Clear(clearColor);
 		pDisplayContext->GetRenderOutput()->m_hasBeenCleared |= FRT_CLEAR_COLOR;
@@ -894,6 +894,22 @@ void CD3D9Renderer::FillFrame(ColorF clearColor)
 			GetS3DRend().ClearVrQuads(Clr_Transparent);   // Force transparent clear for VR quads
 		}
 
+	}, ERenderCommandFlags::SkipDuringLoading);
+}
+
+void CD3D9Renderer::SplashFrame(ColorF clearColor, ITexture* splashTexture)
+{
+	if (splashTexture)
+		splashTexture->AddRef();
+
+	m_pRT->ExecuteRenderThreadCommand([=]
+	{
+		PROFILE_FRAME(RT_SplashFast);
+
+		RT_SplashFast(clearColor, splashTexture);
+
+		if (splashTexture)
+			splashTexture->Release();
 	}, ERenderCommandFlags::SkipDuringLoading);
 }
 
@@ -3538,9 +3554,105 @@ void CD3D9Renderer::RT_EndMeasurement()
 #endif
 }
 
+void CD3D9Renderer::RT_SplashFast(ColorF clearColor, ITexture* splashTexture)
+{
+	bool splashMissing = !splashTexture;
+	if (!splashTexture)
+	{
+		static ICVar* splashScreen = gEnv->pConsole->GetCVar("sys_splashscreen");
+		splashTexture = splashScreen && splashScreen->GetString() ? EF_LoadTexture(splashScreen->GetString(), FT_DONT_STREAM | FT_NOMIPS) : nullptr;
+	}
+
+	CRenderDisplayContext* pDC = GetActiveDisplayContext();
+
+	if (auto swapChainBackedDC = static_cast<CSwapChainBackedRenderDisplayContext*>(pDC))
+	{
+		if (auto backBuffer = swapChainBackedDC->GetCurrentColorOutput())
+		{
+			CClearSurfacePass::Execute(backBuffer, swapChainBackedDC->GetColorClear());
+
+			if (splashTexture)
+			{
+				const int splashWidth = splashTexture->GetWidth();
+				const int splashHeight = splashTexture->GetHeight();
+
+				const int screenWidth = backBuffer->GetWidth();
+				const int screenHeight = backBuffer->GetHeight();
+
+				if (splashWidth > 0 && splashHeight > 0 && screenWidth > 0 && screenHeight > 0)
+				{
+					const float scaleX = (float)screenWidth / (float)splashWidth;
+					const float scaleY = (float)screenHeight / (float)splashHeight;
+
+					const float scale = (scaleY * splashWidth > screenWidth) ? scaleX : scaleY;
+
+					const LONG w = static_cast<long>(splashWidth * scale);
+					const LONG h = static_cast<long>(splashHeight * scale);
+					const LONG x = static_cast<long>((screenWidth - w) * 0.5f);
+					const LONG y = static_cast<long>((screenHeight - h) * 0.5f);
+
+					RECT srcRect = { 0, 0, splashWidth, splashHeight };
+					RECT dstRect = { x, y, x + w, y + h };
+
+					CStretchRegionPass(m_pActiveGraphicsPipeline.get()).Execute((CTexture*)splashTexture, backBuffer, &srcRect, &dstRect);
+				}
+				else
+				{
+					gEnv->pLog->LogWarning("Invalid splash screen texture");
+				}
+			}
+		}
+	}
+
+	if (splashMissing && splashTexture)
+		splashTexture->Release();
+}
+
+void CD3D9Renderer::RT_SplashFast()
+{
+	CRenderDisplayContext* pDC = GetActiveDisplayContext();
+	if (auto swapChainBackedDC = static_cast<CSwapChainBackedRenderDisplayContext*>(pDC))
+		RT_SplashFast(swapChainBackedDC->GetColorClear(), nullptr);
+}
+
+void CD3D9Renderer::RT_ClearFast(ColorF clearColor)
+{
+	CRenderDisplayContext* pDC = GetActiveDisplayContext();
+	if (auto swapChainBackedDC = static_cast<CSwapChainBackedRenderDisplayContext*>(pDC))
+	{
+		if (auto backBuffer = swapChainBackedDC->GetCurrentColorOutput())
+		{
+			static CClearSurfacePass clearPass;
+
+			clearPass.Execute(backBuffer, swapChainBackedDC->GetColorClear());
+		}
+	}
+}
+
+void CD3D9Renderer::RT_ClearFast()
+{
+	CRenderDisplayContext* pDC = GetActiveDisplayContext();
+	if (auto swapChainBackedDC = static_cast<CSwapChainBackedRenderDisplayContext*>(pDC))
+		RT_ClearFast(swapChainBackedDC->GetColorClear());
+}
+
 void CD3D9Renderer::RT_PresentFast()
 {
 	CRenderDisplayContext* pDC = GetActiveDisplayContext();
+
+	// VR social screen
+	if (!GetS3DRend().IsMenuModeEnabled())
+		GetS3DRend().DisplaySocialScreen();
+
+	// Hardware mouse
+	if (gEnv->pHardwareMouse)
+		gEnv->pHardwareMouse->Render();
+
+	{
+		PROFILE_LABEL_SCOPE("SubmitFrameToHMD");
+		GetS3DRend().SubmitFrameToHMD();
+	}
+
 	pDC->PrePresent();
 
 	CRY_ASSERT(pDC->IsSwapChainBacked());
@@ -3554,11 +3666,26 @@ void CD3D9Renderer::RT_PresentFast()
 	swapDC->GetSwapChain().Present(pCommandList, flipMode);
 #elif defined(SUPPORT_DEVICE_INFO)
 
-	GetS3DRend().NotifyFrameFinished();
-
 	DWORD syncInterval = swapDC->ComputePresentInterval(m_VSync ? 1 : 0);
 	CRY_VERIFY(swapDC->GetSwapChain().Present(syncInterval, 0) == S_OK);
 #endif
+
+		if (IHmdRenderer* pHmdRenderer = GetS3DRend().GetIHmdRenderer())
+		{
+			pHmdRenderer->OnPostPresent();
+		}
+
+		if (IHmdRenderer* pHmdRenderer = GetS3DRend().GetIHmdRenderer())
+		{
+			pHmdRenderer->OnPostPresent();
+		}
+
+		if (IHmdRenderer* pHmdRenderer = GetS3DRend().GetIHmdRenderer())
+		{
+			pHmdRenderer->OnPostPresent();
+		}
+
+	GetS3DRend().NotifyFrameFinished();
 
 	m_nRenderThreadFrameID++;
 }

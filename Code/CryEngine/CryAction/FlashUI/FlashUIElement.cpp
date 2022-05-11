@@ -67,6 +67,7 @@ struct SUIElementSerializer
 			ReadElementFlag(xmlNode, pElement, "lazy_update", IUIElement::eFUI_LAZY_UPDATE);
 			ReadElementFlag(xmlNode, pElement, "is_Hud", IUIElement::eFUI_IS_HUD);
 			ReadElementFlag(xmlNode, pElement, "shared_rt", IUIElement::eFUI_SHARED_RT);
+			ReadElementFlag(xmlNode, pElement, "show_at_loading_time", IUIElement::eFUI_SHOW_AT_LOADING_TIME);
 
 			ReadGFxNode(xmlNode->findChild("GFx"), pElement);
 			ReadParamNodes<SUIParameterDesc>(xmlNode->findChild("variables"), pElement->m_variables, "varname", true, pElement->m_pRoot);

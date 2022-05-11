@@ -787,6 +787,8 @@ public:
 
 	virtual void SyncComputeVerticesJobs() override;
 
+	virtual void RT_SplashFast() = 0;
+	virtual void RT_ClearFast() = 0;
 	virtual void RT_PresentFast() = 0;
 
 	virtual int  CurThreadList() override;
@@ -904,6 +906,7 @@ public:
 
 	virtual void        BeginFrame(const SDisplayContextKey& displayContextKey, const SGraphicsPipelineKey& graphicsPipelineKey) override = 0;
 	virtual void        FillFrame(ColorF clearColor) override = 0;
+	virtual void        SplashFrame(ColorF clearColor, ITexture* splashTexture) override = 0;
 	virtual void        RenderDebug(bool bRenderStats = true) override = 0;
 	virtual void        EndFrame() override = 0;
 

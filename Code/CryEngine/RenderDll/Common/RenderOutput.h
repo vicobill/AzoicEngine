@@ -32,6 +32,9 @@ public:
 	ETEX_Format            GetColorFormat() const;
 	ETEX_Format            GetDepthFormat() const;
 
+	ColorF                 GetColorClear() const { return m_clearColor; }
+	ColorF                 GetDepthClear() const { return ColorF(m_clearDepth, 0, 0, 0); }
+
 	CTexture*              GetColorTarget() const;
 	CTexture*              GetDepthTarget() const;
 	bool                   RequiresTemporaryDepthBuffer() const { return m_bUseTempDepthBuffer; }

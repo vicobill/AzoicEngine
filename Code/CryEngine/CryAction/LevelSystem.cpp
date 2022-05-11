@@ -2258,8 +2258,8 @@ void CLevelSystem::UnLoadLevel()
 		gEnv->pRenderer->EndFrame();
 
 		// force a black screen as last render command
-		IRenderAuxImage::Draw2dImage(0, 0, 800, 600, -1, 0.0f, 0.0f, 1.0f, 1.0f, 0.f,
-		                             0.0f, 0.0f, 0.0f, 1.0, 0.f);
+		gEnv->pRenderer->FillFrame(Clr_Empty);
+
 		//flush any outstanding texture requests
 		gEnv->pRenderer->FlushPendingTextureTasks();
 	}

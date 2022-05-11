@@ -3121,7 +3121,7 @@ bool CSystem::Initialize(SSystemInitParams& startupParams)
 #ifdef DEDICATED_SERVER
 		m_env.pHardwareMouse = NULL;
 #else
-		m_env.pHardwareMouse = new CHardwareMouse(true);
+		m_env.pHardwareMouse = new CHardwareMouse(gEnv->IsEditor());
 #endif
 
 		//////////////////////////////////////////////////////////////////////////
@@ -3179,41 +3179,14 @@ bool CSystem::Initialize(SSystemInitParams& startupParams)
 		else if (g_cvars.sys_splashscreen != nullptr && bStartScreensAllowed && g_cvars.sys_splashscreen->GetString()[0] != '\0')
 		{
 			CRY_PROFILE_SECTION(PROFILE_LOADING_ONLY, "Rendering Splash Screen");
-			ITexture* pTex = m_env.pRenderer->EF_LoadTexture(g_cvars.sys_splashscreen->GetString(), FT_DONT_STREAM | FT_NOMIPS);
-			if (pTex)
+			m_env.pRenderer->InitSystemResources(FRR_SYSTEM_RESOURCES);
+
+			// make sure it's rendered in full screen mode when triple buffering is enabled as well
+			for (size_t n = 0; n < 3; n++)
 			{
-				const int splashWidth = pTex->GetWidth();
-				const int splashHeight = pTex->GetHeight();
-
-				const int screenWidth = m_env.pRenderer->GetOverlayWidth();
-				const int screenHeight = m_env.pRenderer->GetOverlayHeight();
-
-				if (splashWidth > 0 && splashHeight > 0 && screenWidth > 0 && screenHeight > 0)
-				{
-					const float scaleX = (float)screenWidth / (float)splashWidth;
-					const float scaleY = (float)screenHeight / (float)splashHeight;
-
-					const float scale = (scaleY * splashWidth > screenWidth) ? scaleX : scaleY;
-
-					const float w = splashWidth * scale;
-					const float h = splashHeight * scale;
-					const float x = (screenWidth - w) * 0.5f;
-					const float y = (screenHeight - h) * 0.5f;
-
-					// make sure it's rendered in full screen mode when triple buffering is enabled as well
-					for (size_t n = 0; n < 3; n++)
-					{
-						m_env.pRenderer->BeginFrame({}, SGraphicsPipelineKey::BaseGraphicsPipelineKey);
-						IRenderAuxImage::Draw2dImage(x, y, w, h, pTex->GetTextureID(), 0.0f, 1.0f, 1.0f, 0.0f);
-						m_env.pRenderer->EndFrame();
-					}
-				}
-				else
-				{
-					gEnv->pLog->LogWarning("Invalid splash screen texture");
-				}
-
-				pTex->Release();
+				m_env.pRenderer->BeginFrame({}, SGraphicsPipelineKey::BaseGraphicsPipelineKey);
+				m_env.pRenderer->SplashFrame(Clr_Empty, nullptr);
+				m_env.pRenderer->EndFrame();
 			}
 		}
 

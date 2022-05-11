@@ -125,11 +125,12 @@ void CIntroMovieRenderer::LoadtimeUpdate(float deltaTime)
 	}
 }
 
-void CIntroMovieRenderer::LoadtimeRender()
+bool CIntroMovieRenderer::LoadtimeRender()
 {
 	auto pPlayer = m_pFlashPlayer;
 	if (pPlayer)
 		pPlayer->Render();
+	return !!pPlayer;
 }
 
 void CIntroMovieRenderer::UpdateViewport()
