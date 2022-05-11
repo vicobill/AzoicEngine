@@ -574,12 +574,16 @@ void SRenderThread::ProcessCommands()
 				START_PROFILE_RT();
 				SRenderThreadLambdaCallback* pRTCallback = ReadCommand<SRenderThreadLambdaCallback*>(n);
 				bool bSkipCommand = (m_eVideoThreadMode != eVTM_Disabled) && (uint32(pRTCallback->flags & ERenderCommandFlags::SkipDuringLoading) != 0);
-				// Execute lambda callback on a render thread
 				if (!bSkipCommand)
 				{
+					// Unclear if thread-safe, as lambda-body is not inspectable (lock when concurrent execution)
+					bool locked = false;
+					if ((locked = (m_eVideoThreadMode != eVTM_Disabled)))
+						m_rdldLock.Lock();
 					pRTCallback->callback();
+					if (locked)
+						m_rdldLock.Unlock();
 				}
-
 				m_lambdaCallbacksPool.Delete(pRTCallback);
 				END_PROFILE_PLUS_RT(SRenderStatistics::Write().m_Summary.renderTime);
 			}
