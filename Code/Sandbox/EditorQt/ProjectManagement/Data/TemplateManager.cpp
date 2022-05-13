@@ -116,11 +116,6 @@ string AdjustLanguageName(const QString& folder)
 void FindProjectsInLanguageFolder(const QString& folder, const int engineRootSize, std::vector<STemplateDescription>& templates)
 {
 	const string language = AdjustLanguageName(folder);
-	if (language == "Schematyc")
-	{
-		// Schematyc is not supported by Sandbox
-		return;
-	}
 
 	QFileInfo fileInfo(folder + '/');
 	QDirIterator iterator(fileInfo.absolutePath(), QStringList() << "*.cryproject", QDir::Files, QDirIterator::Subdirectories);
