@@ -1520,9 +1520,6 @@ void CSystem::RunMainLoop()
 			::ShowCursor(FALSE);
 		}
 	}
-#else
-	if (gEnv && m_env.pHardwareMouse)
-		m_env.pHardwareMouse->DecrementCounter();
 #endif
 
 	for (;;)
