@@ -170,7 +170,7 @@ public:
 	{
 	}
 
-#define Redirect(func) \
+#define RedirectFunc(func) \
   m_Target->func;
 
 	static void DuplicateMetaData(
@@ -194,7 +194,7 @@ public:
 		else
 		{
 			// Internal Interfaces are requested by the DXGI methods (DXGIOutput etc.)
-			ret = Redirect(QueryInterface(riid, ppvObject));
+			ret = RedirectFunc(QueryInterface(riid, ppvObject));
 		}
 
 		return ret;
@@ -202,13 +202,13 @@ public:
 
 	virtual ULONG STDMETHODCALLTYPE AddRef(void) final
 	{
-		Redirect(AddRef());
+		RedirectFunc(AddRef());
 		return CryInterlockedIncrement(&m_RefCount);
 	}
 
 	virtual ULONG STDMETHODCALLTYPE Release(void) final
 	{
-		Redirect(Release());
+		RedirectFunc(Release());
 		ULONG count = CryInterlockedDecrement(&m_RefCount);
 		if (!count) delete this; return count;
 	}
@@ -222,7 +222,7 @@ public:
 	  _Inout_ UINT* pDataSize,
 	  _Out_writes_bytes_opt_(*pDataSize)  void* pData) final
 	{
-		return Redirect(GetPrivateData(guid, pDataSize, pData));
+		return RedirectFunc(GetPrivateData(guid, pDataSize, pData));
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE SetPrivateData(
@@ -230,20 +230,20 @@ public:
 	  _In_ UINT DataSize,
 	  _In_reads_bytes_opt_(DataSize)  const void* pData) final
 	{
-		return Redirect(SetPrivateData(guid, DataSize, pData));
+		return RedirectFunc(SetPrivateData(guid, DataSize, pData));
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE SetPrivateDataInterface(
 	  _In_ REFGUID guid,
 	  _In_opt_ const IUnknown* pData) final
 	{
-		return Redirect(SetPrivateDataInterface(guid, pData));
+		return RedirectFunc(SetPrivateDataInterface(guid, pData));
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE SetName(
 	  _In_z_ LPCWSTR Name) final
 	{
-		return Redirect(SetName(Name));
+		return RedirectFunc(SetName(Name));
 	}
 
 	#pragma endregion
@@ -252,7 +252,7 @@ public:
 
 	virtual UINT STDMETHODCALLTYPE GetNodeCount(void) final
 	{
-		return Redirect(GetNodeCount());
+		return RedirectFunc(GetNodeCount());
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE CreateCommandQueue(
@@ -276,7 +276,7 @@ public:
 	  REFIID riid,
 	  _COM_Outptr_ void** ppPipelineState) final
 	{
-		return Redirect(CreateGraphicsPipelineState(pDesc, riid, ppPipelineState));
+		return RedirectFunc(CreateGraphicsPipelineState(pDesc, riid, ppPipelineState));
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE CreateComputePipelineState(
@@ -284,7 +284,7 @@ public:
 	  REFIID riid,
 	  _COM_Outptr_ void** ppPipelineState) final
 	{
-		return Redirect(CreateComputePipelineState(pDesc, riid, ppPipelineState));
+		return RedirectFunc(CreateComputePipelineState(pDesc, riid, ppPipelineState));
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE CreateCommandList(
@@ -303,7 +303,7 @@ public:
 	  _Inout_updates_bytes_(FeatureSupportDataSize)  void* pFeatureSupportData,
 	  UINT FeatureSupportDataSize) final
 	{
-		return Redirect(CheckFeatureSupport(Feature, pFeatureSupportData, FeatureSupportDataSize));
+		return RedirectFunc(CheckFeatureSupport(Feature, pFeatureSupportData, FeatureSupportDataSize));
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE CreateDescriptorHeap(
@@ -317,7 +317,7 @@ public:
 	virtual UINT STDMETHODCALLTYPE GetDescriptorHandleIncrementSize(
 	  _In_ D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeapType) final
 	{
-		return Redirect(GetDescriptorHandleIncrementSize(DescriptorHeapType));
+		return RedirectFunc(GetDescriptorHandleIncrementSize(DescriptorHeapType));
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE CreateRootSignature(
@@ -333,7 +333,7 @@ public:
 			nodeMask = 1;
 #endif
 
-		return Redirect(CreateRootSignature(nodeMask, pBlobWithRootSignature, blobLengthInBytes, riid, ppvRootSignature));
+		return RedirectFunc(CreateRootSignature(nodeMask, pBlobWithRootSignature, blobLengthInBytes, riid, ppvRootSignature));
 	}
 
 	virtual void STDMETHODCALLTYPE CreateConstantBufferView(
@@ -350,7 +350,7 @@ public:
 			{
 				Descriptor.ptr = DestDescriptor.ptr + DeltaDescriptors[i];
 
-				Redirect(CreateConstantBufferView(nullptr, Descriptor));
+				RedirectFunc(CreateConstantBufferView(nullptr, Descriptor));
 			}
 
 			return;
@@ -366,7 +366,7 @@ public:
 			Desc.BufferLocation = pDesc->BufferLocation + DeltaLocations[i];
 			Descriptor.ptr = DestDescriptor.ptr + DeltaDescriptors[i];
 
-			Redirect(CreateConstantBufferView(&Desc, Descriptor));
+			RedirectFunc(CreateConstantBufferView(&Desc, Descriptor));
 		}
 	}
 
@@ -390,7 +390,7 @@ public:
 			if (pBroadcastableResource)
 				pResource = *(*pBroadcastableResource)[i];
 
-			Redirect(CreateShaderResourceView(pResource, pDesc, Descriptor));
+			RedirectFunc(CreateShaderResourceView(pResource, pDesc, Descriptor));
 		}
 	}
 
@@ -422,7 +422,7 @@ public:
 			if (pBroadcastableCounterResource)
 				pCounterResource = *(*pBroadcastableCounterResource)[i];
 
-			Redirect(CreateUnorderedAccessView(pResource, pCounterResource, pDesc, Descriptor));
+			RedirectFunc(CreateUnorderedAccessView(pResource, pCounterResource, pDesc, Descriptor));
 		}
 	}
 
@@ -446,7 +446,7 @@ public:
 			if (pBroadcastableResource)
 				pResource = *(*pBroadcastableResource)[i];
 
-			Redirect(CreateRenderTargetView(pResource, pDesc, Descriptor));
+			RedirectFunc(CreateRenderTargetView(pResource, pDesc, Descriptor));
 		}
 	}
 
@@ -470,7 +470,7 @@ public:
 			if (pBroadcastableResource)
 				pResource = *(*pBroadcastableResource)[i];
 
-			Redirect(CreateDepthStencilView(pResource, pDesc, Descriptor));
+			RedirectFunc(CreateDepthStencilView(pResource, pDesc, Descriptor));
 		}
 	}
 
@@ -485,7 +485,7 @@ public:
 		{
 			Descriptor.ptr = DestDescriptor.ptr + DeltaDescriptors[i];
 
-			Redirect(CreateSampler(pDesc, Descriptor));
+			RedirectFunc(CreateSampler(pDesc, Descriptor));
 		}
 	}
 
@@ -520,7 +520,7 @@ public:
 				SrcDescriptorRangeStarts[j].ptr = pSrcDescriptorRangeStarts[j].ptr + StartDeltaDescriptors[i];
 			}
 
-			Redirect(CopyDescriptors(NumDestDescriptorRanges, DstDescriptorRangeStarts, pDestDescriptorRangeSizes, NumSrcDescriptorRanges, SrcDescriptorRangeStarts, pSrcDescriptorRangeSizes, DescriptorHeapsType));
+			RedirectFunc(CopyDescriptors(NumDestDescriptorRanges, DstDescriptorRangeStarts, pDestDescriptorRangeSizes, NumSrcDescriptorRanges, SrcDescriptorRangeStarts, pSrcDescriptorRangeSizes, DescriptorHeapsType));
 		}
 	}
 
@@ -540,7 +540,7 @@ public:
 			DstDescriptor.ptr = DestDescriptorRangeStart.ptr + DstDeltaDescriptors[i];
 			SrcDescriptor.ptr = SrcDescriptorRangeStart.ptr + SrcDeltaDescriptors[i];
 
-			Redirect(CopyDescriptorsSimple(NumDescriptors, DstDescriptor, SrcDescriptor, DescriptorHeapsType));
+			RedirectFunc(CopyDescriptorsSimple(NumDescriptors, DstDescriptor, SrcDescriptor, DescriptorHeapsType));
 		}
 	}
 
@@ -549,7 +549,7 @@ public:
 	  _In_ UINT numResourceDescs,
 	  _In_reads_(numResourceDescs)  const D3D12_RESOURCE_DESC* pResourceDescs) final
 	{
-		return Redirect(GetResourceAllocationInfo(visibleMask, numResourceDescs, pResourceDescs));
+		return RedirectFunc(GetResourceAllocationInfo(visibleMask, numResourceDescs, pResourceDescs));
 	}
 
 	virtual D3D12_HEAP_PROPERTIES STDMETHODCALLTYPE GetCustomHeapProperties(
@@ -563,7 +563,7 @@ public:
 #endif
 
 		// Q: Could the be different for each node?
-		return Redirect(GetCustomHeapProperties(blsi(nodeMask), heapType));
+		return RedirectFunc(GetCustomHeapProperties(blsi(nodeMask), heapType));
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE CreateCommittedResource(
@@ -667,7 +667,7 @@ public:
 
 	virtual HRESULT STDMETHODCALLTYPE GetDeviceRemovedReason(void) final
 	{
-		return Redirect(GetDeviceRemovedReason());
+		return RedirectFunc(GetDeviceRemovedReason());
 	}
 
 	virtual void STDMETHODCALLTYPE GetCopyableFootprints(
@@ -680,7 +680,7 @@ public:
 	  _Out_writes_opt_(NumSubresources)  UINT64* pRowSizeInBytes,
 	  _Out_opt_ UINT64* pTotalBytes) final
 	{
-		return Redirect(GetCopyableFootprints(pResourceDesc, FirstSubresource, NumSubresources, BaseOffset, pLayouts, pNumRows, pRowSizeInBytes, pTotalBytes));
+		return RedirectFunc(GetCopyableFootprints(pResourceDesc, FirstSubresource, NumSubresources, BaseOffset, pLayouts, pNumRows, pRowSizeInBytes, pTotalBytes));
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE CreateQueryHeap(
@@ -694,7 +694,7 @@ public:
 	virtual HRESULT STDMETHODCALLTYPE SetStablePowerState(
 	  BOOL Enable) final
 	{
-		return Redirect(SetStablePowerState(Enable));
+		return RedirectFunc(SetStablePowerState(Enable));
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE CreateCommandSignature(
@@ -705,7 +705,7 @@ public:
 	{
 		// TODO: implement BroadcastableD3D12CommandSignature
 		CRY_FUNCTION_NOT_IMPLEMENTED;
-		return Redirect(CreateCommandSignature(pDesc, pRootSignature, riid, ppvCommandSignature));
+		return RedirectFunc(CreateCommandSignature(pDesc, pRootSignature, riid, ppvCommandSignature));
 	}
 
 	virtual void STDMETHODCALLTYPE GetResourceTiling(
@@ -722,7 +722,7 @@ public:
 
 	virtual LUID STDMETHODCALLTYPE GetAdapterLuid(void) final
 	{
-		return Redirect(GetAdapterLuid());
+		return RedirectFunc(GetAdapterLuid());
 	}
 
 	#pragma endregion

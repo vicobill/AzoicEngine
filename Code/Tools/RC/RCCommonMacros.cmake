@@ -342,10 +342,10 @@ endfunction()
 
 # Common library requirements
 macro(use_fbx_sdk)
-	target_include_directories(${THIS_PROJECT} PRIVATE "${SDK_DIR}/FbxSdk/include")
+	target_include_directories(${THIS_PROJECT} PRIVATE "${FBX_INCLUDE_DIRS}")
 	target_compile_definitions(${THIS_PROJECT} PRIVATE -DFBXSDK_NEW_API=1 -DTOOLS_ENABLE_FBX_SDK)
 	if (MSVC_VERSION GREATER 1900) # Visual Studio > 2015
-		set(FBX_SUBFOLDER vs2015)
+		set(FBX_SUBFOLDER vs2017)
 	elseif (MSVC_VERSION EQUAL 1900) # Visual Studio 2015
 		set(FBX_SUBFOLDER vs2015)
 	elseif (MSVC_VERSION EQUAL 1800) # Visual Studio 2013
@@ -354,12 +354,13 @@ macro(use_fbx_sdk)
 		set(FBX_SUBFOLDER vs2012)
 	endif()
 
-	set(FBX_PATH "${SDK_DIR}/FbxSdk/lib/${FBX_SUBFOLDER}/x64")
+	set(FBX_PATH "${FBX_ROOT_DIR}/lib/${FBX_SUBFOLDER}/x64")
 
 	set_libpath_flag()
 	set_property(TARGET ${THIS_PROJECT} APPEND_STRING PROPERTY LINK_FLAGS_DEBUG "${LIBPATH_FLAG}\"${FBX_PATH}/debug\"")
 	set_property(TARGET ${THIS_PROJECT} APPEND_STRING PROPERTY LINK_FLAGS_RELEASE "${LIBPATH_FLAG}\"${FBX_PATH}/release\"")
-	target_link_libraries(${THIS_PROJECT} PRIVATE libfbxsdk-mt)		
+	target_link_libraries(${THIS_PROJECT} PRIVATE libfbxsdk-mt libxml2-mt zlib-mt)	
+	# target_link_libraries(${THIS_PROJECT} INTERFACE fbx::sdk)	
 endmacro()
 
 macro(use_substance)

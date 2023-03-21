@@ -1,6 +1,6 @@
 option(PLUGIN_SAMPLE_EDITOR_PLUGIN "Build SamplePlugin" OFF)
 
-set(CMAKE_AUTOMOC_RELAXED_MODE TRUE)
+# set(CMAKE_AUTOMOC_RELAXED_MODE TRUE) # is deprecated an will be removed in the future. 
 
 #modules
 include("${TOOLS_CMAKE_DIR}/modules/FbxSdk.cmake")

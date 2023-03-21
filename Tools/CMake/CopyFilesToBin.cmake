@@ -182,7 +182,7 @@ macro(deploy_pyside)
 	file(GLOB FILES_TO_COPY RELATIVE "${PYSIDE_SOURCE}" "${PYSIDE_SOURCE}*.py" "${PYSIDE_SOURCE}scripts/*.py")
 	deploy_pyside_files()
 
-	deploy_runtime_dir("${PYSIDE_SDK_SOURCE}pyside2uic" "pyside2uic")
+	# deploy_runtime_dir("${PYSIDE_SDK_SOURCE}pyside2uic" "pyside2uic") # vcob: not found!
 
 endmacro()
 

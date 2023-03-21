@@ -23,6 +23,8 @@ set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS}" CACHE STRING "C Flags" FORCE)
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}" CACHE STRING "C Flags" FORCE)
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}" CACHE STRING "C Flags" FORCE)
 
+set(CMAKE_MODULE_PATH "${CRYENGINE_SOURCE_DIR}/Tools/CMake/modules;${CRYENGINE_SOURCE_DIR}/Tools/CMake/vendor")
+
 project(ResourceCompiler${BUILD_PLATFORM} CXX C)
 
 # SDK Directory
@@ -48,6 +50,10 @@ endif()
 
 if (EXISTS "${SDK_DIR}/FbxSdk")
 	option(OPTION_FBX_SDK "FBX SDK support" ON)
+endif()
+find_package(Fbx QUIET)
+if (FBX_FOUND)
+	set(OPTION_FBX_SDK ON)
 endif()
 if (EXISTS "${SDK_DIR}/SubstanceEngines")
 	option(OPTION_SUBSTANCE_SUPPORT "Support Substance Integration" ON)
