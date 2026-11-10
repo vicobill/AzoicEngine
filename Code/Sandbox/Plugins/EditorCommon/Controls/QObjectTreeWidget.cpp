@@ -67,7 +67,7 @@ QObjectTreeWidget::QObjectTreeWidget(QWidget* pParent /*= nullptr*/, const char*
 
 	m_pModel = new QStandardItemModel();
 	m_pModel->setHorizontalHeaderLabels(QStringList("Name"));
-	QDeepFilterProxyModel::BehaviorFlags behavior = QDeepFilterProxyModel::AcceptIfChildMatches | QDeepFilterProxyModel::AcceptIfParentMatches;
+	QDeepFilterProxyModel::BehaviorFlags behavior = QDeepFilterProxyModel::BehaviorFlags(QDeepFilterProxyModel::AcceptIfChildMatches | QDeepFilterProxyModel::AcceptIfParentMatches);
 	m_pProxy = new QDeepFilterProxyModel(behavior);
 	m_pProxy->setSourceModel(m_pModel);
 	m_pProxy->setSortRole(QObjectTreeView::Sort);

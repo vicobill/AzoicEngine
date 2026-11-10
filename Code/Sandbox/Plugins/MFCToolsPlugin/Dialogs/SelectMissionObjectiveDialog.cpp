@@ -33,7 +33,7 @@ CSelectMissionObjectiveDialog::OnInitDialog()
 CSelectMissionObjectiveDialog::GetItems(std::vector<SItem>& outItems)
 {
 	// load MOs
-	CString path = PathUtil::GetGameFolder() + "/Libs/UI/";
+	CString path = CString(PathUtil::GetGameFolder().c_str()) + "/Libs/UI/";
 	if (!CFileUtil::FileExists("Libs/UI/Objectives_global.xml")
 	    && CFileUtil::FileExists("Libs/UI/Objectives_new.xml"))
 	{

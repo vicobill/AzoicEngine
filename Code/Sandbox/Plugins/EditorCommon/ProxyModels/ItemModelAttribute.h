@@ -6,6 +6,7 @@
 #include "QtUtil.h"
 
 #include <CrySandbox/CrySignal.h>
+#include <CrySerialization/Enum.h>
 
 #include <QVariant>
 #include <QWidget>

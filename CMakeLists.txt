@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.22)
 
 if(NOT DEFINED CRYENGINE_DIR)
 	set(CRYENGINE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")

@@ -146,7 +146,7 @@ void CPersonalizationManager::LoadSharedState()
 
 void CPersonalizationManager::LoadProjectState()
 {
-	QString path = PathUtil::GetUserSandboxFolder();
+	QString path =QString( PathUtil::GetUserSandboxFolder());
 	path += "/Personalization.json";
 
 	QFile file(path);
@@ -164,7 +164,7 @@ void CPersonalizationManager::LoadProjectState()
 
 void CPersonalizationManager::SaveProjectState() const
 {
-	QString path = PathUtil::GetUserSandboxFolder();
+	QString path = QString(PathUtil::GetUserSandboxFolder());
 	QDir(path).mkpath(path);
 	path += "/Personalization.json";
 

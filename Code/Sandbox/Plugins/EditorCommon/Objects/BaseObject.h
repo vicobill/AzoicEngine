@@ -408,7 +408,7 @@ public:
 	//! Return object we're linked to
 	CBaseObject*         GetLinkedTo() const     { return m_pLinkedTo; }
 	//! Returns name of object/bone this object is linked to
-	virtual const char*  GetLinkedToName() const { return m_pLinkedTo ? m_pLinkedTo->GetName() : ""; }
+	virtual const char*  GetLinkedToName() const { return m_pLinkedTo ? m_pLinkedTo->GetName().c_str() : ""; }
 	//! Scans hierarchy up to determine if we are a descendant of pObject
 	virtual bool         IsDescendantOf(const CBaseObject* pObject) const;
 	//! Find the link or the parent that owns this object, return null if none exist

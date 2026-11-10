@@ -13,16 +13,29 @@ class CCommand;
 class CEditorWidget;
 
 //! The widget that encapsulates registration and handling of actions.
+/**
+ * @class CEditorWidget
+ * @brief 继承自QWidget的编辑器窗口基类，提供命令和动作管理功能
+ * @details 该类实现了编辑器的基本功能，包括命令注册、动作处理、快捷键管理等
+ */
 class EDITOR_COMMON_API CEditorWidget : public QWidget
 {
-	Q_OBJECT
+	Q_OBJECT  // Qt宏，支持信号和槽机制
 public:
+    /**
+     * @brief 构造函数
+     * @param pParent 父窗口指针，默认为nullptr
+     */
 	CEditorWidget(QWidget* pParent = nullptr)
 		: QWidget(pParent)
 		, m_widgetActionRegistry(*this)
 		, m_pShortcutOverride(nullptr)
 	{}
 
+    /**
+     * @brief 获取所有命令的引用
+     * @return 返回命令列表的常量引用
+     */
 	const std::vector<CCommand*>& GetCommands() const { return m_commands; }
 
 	QCommandAction* GetAction_Deprecated(const string& actionId) const;
@@ -98,3 +111,16 @@ private:
 	StringMap<QCommandAction*> m_actions;
 	QCommandAction*            m_pShortcutOverride;
 };
+
+//! Implementation of CWidgetActionRegistry::Register, placed here because it requires CEditorWidget to be complete.
+template<class Ret, class Context, class... Params, class EnableIfContext>
+QCommandAction* CWidgetActionRegistry::Register(const string& actionId, std::function<Ret(Context, Params...)> actionHandler, uintptr_t id,
+	EActionHandlerPermission perm, int priority)
+{
+	auto func = [this, actionHandler = std::move(actionHandler)](Params&&... params)
+	{
+		actionHandler(static_cast<Context>(m_widget.GetContextObject()), std::forward<Params>(params)...);
+	};
+
+	return m_widget.RegisterAction(actionId, std::move(func), perm, priority, id);
+}

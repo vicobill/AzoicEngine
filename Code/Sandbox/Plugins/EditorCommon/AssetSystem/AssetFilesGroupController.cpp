@@ -40,7 +40,7 @@ std::vector<string> CAssetFilesGroupController::GetFiles(bool includeGeneratedFi
 
 string CAssetFilesGroupController::GetGeneratedFile() const
 {
-	return !m_pAsset || !m_pAsset->GetType()->HasThumbnail() ? "" : m_pAsset->GetThumbnailPath();
+	return !m_pAsset || !m_pAsset->GetType()->HasThumbnail() ? string("") : m_pAsset->GetThumbnailPath();
 }
 
 void CAssetFilesGroupController::Update()

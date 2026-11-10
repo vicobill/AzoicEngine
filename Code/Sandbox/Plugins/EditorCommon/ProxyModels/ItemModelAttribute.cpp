@@ -337,7 +337,7 @@ public:
 			pComboBox->AddItems(attr->GetEnumEntries());
 		}
 
-		QVariant& val = pFilter->GetFilterValue();
+		const QVariant& val = pFilter->GetFilterValue();
 		if (val.isValid())
 		{
 			bool ok = false;

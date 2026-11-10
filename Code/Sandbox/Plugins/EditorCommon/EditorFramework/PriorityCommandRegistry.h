@@ -213,7 +213,7 @@ struct SPriorityCommandRegistry
 		bool result = false;
 		if (it != commands.cend())
 		{
-			string argsStr = commandStr.size() > commandId.size() + 1 ? commandStr.substr(commandId.size() + 1) : "";
+			string argsStr = commandStr.size() > commandId.size() + 1 ? commandStr.substr(commandId.size() + 1) : string();
 			HandlersList& handlers = it->second;
 			for (size_t i = 0; i < handlers.funcs.size(); ++i)
 			{

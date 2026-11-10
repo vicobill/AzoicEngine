@@ -6,7 +6,7 @@
 #include "AssetSystem/Asset.h"
 
 //! Descriptive asset tooltip, mostly used by the asset browser but can in theory be used from anywhere
-class EDITOR_COMMON_API CAssetTooltip : private QTrackingTooltip
+class EDITOR_COMMON_API CAssetTooltip : public QTrackingTooltip
 {
 	Q_OBJECT
 public:

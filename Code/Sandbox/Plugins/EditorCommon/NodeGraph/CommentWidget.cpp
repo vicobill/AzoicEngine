@@ -148,7 +148,7 @@ void CCommentWidget::OnItemTextChanged()
 	CAbstractCommentItem* pCommentItem = CAbstractNodeGraphViewModelItem::Cast<CAbstractCommentItem>(GetAbstractItem());
 	if (pCommentItem)
 	{
-		QString text = pCommentItem->GetEditorData().GetText();
+		QString text = QString(pCommentItem->GetEditorData().GetText());
 
 		m_pText->SetText(text);
 		m_pText->update();

@@ -551,7 +551,8 @@ QFilteringPanel::QFilteringPanel(const char* uniqueName, QAttributeFilterProxyMo
 		{
 			CAbstractMenu abstractMenu;
 			FillMenu(&abstractMenu);
-			abstractMenu.Build(MenuWidgetBuilders::CMenuBuilder(m_optionsButton->menu()));
+			auto builder = MenuWidgetBuilders::CMenuBuilder(m_optionsButton->menu());
+			abstractMenu.Build(builder);
 			m_optionsButton->showMenu();
 		});
 	}

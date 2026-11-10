@@ -31,13 +31,13 @@ struct SCryLANSessionID : public SCrySharedSessionID
 	{
 	}
 
-	virtual bool operator==(const SCrySessionID& other)
+	virtual bool operator==(const SCrySessionID& other) const
 	{
 		return (m_h == ((const SCryLANSessionID&)other).m_h) &&
 		       (m_ip == ((const SCryLANSessionID&)other).m_ip) &&
 		       (m_port == ((const SCryLANSessionID&)other).m_port);
 	};
-	virtual bool operator<(const SCrySessionID& other)
+	virtual bool operator<(const SCrySessionID& other) const
 	{
 		return ((m_h < ((const SCryLANSessionID&)other).m_h) ||
 		        ((m_h == ((const SCryLANSessionID&)other).m_h) && (m_ip < ((const SCryLANSessionID&)other).m_ip)) ||

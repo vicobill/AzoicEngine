@@ -39,7 +39,7 @@ CObjectArchive::~CObjectArchive()
 	}
 }
 
-void CObjectArchive::SetResolveCallback(CBaseObject* fromObject, const CryGUID& objectId, ResolveObjRefFunctor1& func)
+void CObjectArchive::SetResolveCallback(CBaseObject* fromObject, const CryGUID& objectId, const ResolveObjRefFunctor1& func)
 {
 	if (objectId == CryGUID::Null())
 	{
@@ -78,7 +78,7 @@ void CObjectArchive::SetResolveCallback(CBaseObject* fromObject, const CryGUID& 
 	}
 }
 
-void CObjectArchive::SetResolveCallback(CBaseObject* fromObject, const CryGUID& objectId, ResolveObjRefFunctor2& func, uint32 userData)
+void CObjectArchive::SetResolveCallback(CBaseObject* fromObject, const CryGUID& objectId, const ResolveObjRefFunctor2& func, uint32 userData)
 {
 	if (objectId == CryGUID::Null())
 	{

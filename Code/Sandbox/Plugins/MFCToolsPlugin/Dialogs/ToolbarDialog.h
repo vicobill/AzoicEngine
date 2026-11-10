@@ -22,7 +22,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(CTerrainDialog)
 	afx_msg BOOL OnToolTipText(UINT, NMHDR * pNMHDR, LRESULT * pResult);
-	afx_msg BOOL CToolbarDialog::OnInitDialog();
+	afx_msg BOOL OnInitDialog();
 	afx_msg void OnDestroy();
 	afx_msg void OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu);
 	afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);

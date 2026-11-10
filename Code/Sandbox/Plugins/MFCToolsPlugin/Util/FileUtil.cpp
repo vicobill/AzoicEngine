@@ -608,7 +608,7 @@ void CFileUtil::EditTextFile(const char* txtFile, int line, ETextFileType fileTy
 		cmd = file;
 	}
 
-	CString TextEditor = gEditorFilePreferences.textEditorScript;
+	CString TextEditor = gEditorFilePreferences.textEditorScript.c_str();
 	if (fileType == FILE_TYPE_SHADER)
 	{
 		TextEditor = gEditorFilePreferences.textEditorShaders;
@@ -663,7 +663,7 @@ void CFileUtil::EditTextureFile(const char* txtureFile, bool bUseGameFolder)
 //////////////////////////////////////////////////////////////////////////
 bool CFileUtil::EditMayaFile(const char* filepath, const bool bExtractFromPak, const bool bUseGameFolder)
 {
-	CString dosFilepath = PathUtil::ToDosPath(filepath);
+	CString dosFilepath = PathUtil::ToDosPath(filepath).c_str();
 	if (bExtractFromPak)
 	{
 		ExtractFile(dosFilepath);
@@ -671,7 +671,7 @@ bool CFileUtil::EditMayaFile(const char* filepath, const bool bExtractFromPak, c
 
 	if (bUseGameFolder)
 	{
-		const CString sGameFolder = PathUtil::GetGameFolder();
+		const CString sGameFolder = PathUtil::GetGameFolder().c_str();
 		int nLength = sGameFolder.GetLength();
 		if (strnicmp(filepath, sGameFolder, nLength) != 0)
 		{
@@ -790,7 +790,7 @@ CString CFileUtil::FormatInitialFolderForFileDialog(const CString& folder)
 //////////////////////////////////////////////////////////////////////////
 void CFileUtil::FormatFilterString(CString& filter)
 {
-	const string s = filter;
+	const string s = filter.GetString();
 	const int numPipeChars = std::count(s.begin(), s.end(), '|');
 	if (numPipeChars == 1)
 	{
@@ -964,9 +964,9 @@ bool CFileUtil::SelectMultipleFiles(ECustomFileType fileType, std::vector<CStrin
 inline bool ScanDirectoryFiles(const CString& root, const CString& path, const CString& fileSpec, std::vector<CFileUtil::FileDesc>& files, bool bSkipPaks)
 {
 	bool anyFound = false;
-	CString dir = PathUtil::AddBackslash((root + path).GetString());
+	CString dir = PathUtil::AddBackslash((root + path).GetString()).c_str();
 
-	CString findFilter = PathUtil::Make(dir, fileSpec);
+	CString findFilter = PathUtil::Make(dir, fileSpec).c_str();
 	ICryPak* pIPak = GetIEditor()->GetSystem()->GetIPak();
 
 	// Add all directories.
@@ -1014,7 +1014,7 @@ inline bool ScanDirectoryFiles(const CString& root, const CString& path, const C
 inline int ScanDirectoryRecursive(const CString& root, const CString& path, const CString& fileSpec, std::vector<CFileUtil::FileDesc>& files, bool recursive, bool addDirAlso, CFileUtil::ScanDirectoryUpdateCallBack updateCB, bool bSkipPaks)
 {
 	bool anyFound = false;
-	CString dir = PathUtil::AddBackslash((root + path).GetString());
+	CString dir = PathUtil::AddBackslash((root + path).GetString()).c_str();
 
 	if (updateCB)
 	{
@@ -1088,7 +1088,7 @@ inline int ScanDirectoryRecursive(const CString& root, const CString& path, cons
 bool CFileUtil::ScanDirectory(const CString& path, const CString& file, std::vector<FileDesc>& files, bool recursive, bool addDirAlso, CFileUtil::ScanDirectoryUpdateCallBack updateCB, bool bSkipPaks)
 {
 	CString fileSpec = PathUtil::GetFile(file);
-	CString localPath = PathUtil::GetPathWithoutFilename(file);
+	CString localPath = PathUtil::GetPathWithoutFilename(file).c_str();
 	return ScanDirectoryRecursive(PathUtil::AddBackslash(path.GetString()).c_str(), localPath, fileSpec, files, recursive, addDirAlso, updateCB, bSkipPaks) > 0;
 }
 
@@ -1108,7 +1108,7 @@ void CFileUtil::ShowInExplorer(const CString& path)
 bool CFileUtil::OverwriteFile(const CString& filename)
 {
 	// check if file exist.
-	CString adjFileName = PathUtil::GamePathToCryPakPath(filename.GetString(), true);
+	CString adjFileName = PathUtil::GamePathToCryPakPath(filename.GetString(), true).c_str();
 
 	FILE* file = fopen(adjFileName, "rb");
 	if (!file)
@@ -1261,7 +1261,7 @@ void CFileUtil::BackupFile(const char* filename)
 	// Make a backup of previous file.
 	bool makeBackup = true;
 
-	CString bakFilename = PathUtil::ReplaceExtension(filename, "bak");
+	CString bakFilename = PathUtil::ReplaceExtension(filename, "bak").c_str();
 
 	{
 		// Check if backup needed.
@@ -2317,7 +2317,7 @@ void CFileUtil::GatherAssetFilenamesFromLevel(std::set<CString>& rOutFilenames, 
 
 		for (CUsedResources::TResourceFiles::iterator iter = usedRes.files.begin(); iter != usedRes.files.end(); ++iter)
 		{
-			CString tmpStr = (*iter);
+			CString tmpStr = (*iter).c_str();
 
 			if (bMakeLowerCase)
 			{
@@ -2597,4 +2597,3 @@ std::vector<string> CFileUtil::PickTagsFromPath(const string& path)
 	}
 	return tags;
 }
-

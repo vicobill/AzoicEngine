@@ -1124,7 +1124,8 @@ protected:
 template<class T>
 class TVariableArray : public CVariable<T>
 {
-	typedef TVariableArray<T> Self;
+	using Self = TVariableArray<T>;
+	using base_t = CVariable<T>;
 public:
 	TVariableArray() : CVariable<T>() {}
 	// Copy Constructor.
@@ -1156,7 +1157,7 @@ public:
 	void CopyValue(IVariable* fromVar)
 	{
 		assert(fromVar);
-		if (fromVar->GetType() != GetType())
+		if (fromVar->GetType() != base_t::GetType())
 			return;
 		__super::CopyValue(fromVar);
 		int numSrc = fromVar->GetNumVariables();
@@ -1349,7 +1350,9 @@ private:
 template<class T>
 class CVariableEnum : public CVariable<T>
 {
+	using base_t = CVariable<T>;
 public:
+	
 	//////////////////////////////////////////////////////////////////////////
 	CVariableEnum() {}
 
@@ -1359,7 +1362,7 @@ public:
 	//! Add new item to the enumeration.
 	void AddEnumItem(const string& name, const T& value)
 	{
-		if (GetFlags() & UI_USE_GLOBAL_ENUMS)  // don't think adding makes sense
+		if (base_t::GetFlags() & IVariable::EFlags::UI_USE_GLOBAL_ENUMS)  // don't think adding makes sense
 			return;
 		if (!m_enum)
 			m_enum = new CVarEnumList<T>;
@@ -1367,7 +1370,7 @@ public:
 	}
 	void AddEnumItem(const char* name, const T& value)
 	{
-		if (GetFlags() & UI_USE_GLOBAL_ENUMS)  // don't think adding makes sense
+		if (base_t::GetFlags() & IVariable::EFlags::UI_USE_GLOBAL_ENUMS)  // don't think adding makes sense
 			return;
 		if (!m_enum)
 			m_enum = new CVarEnumList<T>;
@@ -1376,7 +1379,7 @@ public:
 	void SetEnumList(CVarEnumListBase<T>* enumList)
 	{
 		m_enum = enumList;
-		OnSetValue(false);
+		CVariableBase::OnSetValue(false);
 	}
 	IVarEnumList* GetEnumList() const
 	{
@@ -1392,7 +1395,7 @@ public:
 	virtual string GetDisplayValue() const
 	{
 		if (m_enum)
-			return m_enum->ValueToName(m_valueDef);
+			return m_enum->ValueToName(base_t::m_valueDef);
 		else
 			return CVariable<T>::GetDisplayValue();
 	}
@@ -1400,9 +1403,9 @@ public:
 	virtual void SetDisplayValue(const string& value)
 	{
 		if (m_enum)
-			Set(m_enum->NameToValue(value));
+			this->Set(m_enum->NameToValue(value));
 		else
-			Set(value);
+			this->Set(value);
 	}
 
 protected:
@@ -1422,7 +1425,7 @@ private:
 template<class T, class TVar>
 struct CSmartVariableBase
 {
-	typedef typename TVar VarType;
+	using VarType = TVar;
 
 	CSmartVariableBase() { pVar = new VarType; }
 
@@ -1447,37 +1450,37 @@ protected:
 template<class T>
 struct CSmartVariable : public CSmartVariableBase<T, CVariable<T>>
 {
-	void operator=(const T& value) { VarType* pV = pVar; *pV = value; }
+	void operator=(const T& value) { *this->pVar = value; }
 };
 
 //////////////////////////////////////////////////////////////////////////
 template<class T>
 struct CSmartVariableArrayT : public CSmartVariableBase<T, TVariableArray<T>>
 {
-	void operator=(const T& value) { VarType* pV = pVar; *pV = value; }
+	void operator=(const T& value) { *this->pVar = value; }
 };
 
 //////////////////////////////////////////////////////////////////////////
 template<class T>
 struct CSmartVariableEnum : public CSmartVariableBase<T, CVariableEnum<T>>
 {
-	void operator=(const T& value) { VarType* pV = pVar; *pV = value; }
+	void operator=(const T& value) { *this->pVar = value; }
 	void AddEnumItem(const string& name, const T& value)
 	{
-		pVar->AddEnumItem(name, value);
+		this->pVar->AddEnumItem(name, value);
 	}
 	void SetEnumList(CVarEnumListBase<T>* enumList)
 	{
-		pVar->EnableUpdateCallbacks(false);
-		pVar->SetEnumList(enumList);
-		pVar->EnableUpdateCallbacks(true);
+		this->pVar->EnableUpdateCallbacks(false);
+		this->pVar->SetEnumList(enumList);
+		this->pVar->EnableUpdateCallbacks(true);
 	}
 };
 
 //////////////////////////////////////////////////////////////////////////
 struct CSmartVariableArray
 {
-	typedef CVariableArray VarType;
+	using VarType = CVariableArray;
 
 	CSmartVariableArray() { pVar = new VarType; }
 

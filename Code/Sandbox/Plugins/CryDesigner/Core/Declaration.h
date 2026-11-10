@@ -140,7 +140,7 @@ struct IndexPair
 		m_i[0] = ip.m_i[0];
 		m_i[1] = ip.m_i[1];
 	}
-	bool operator==(const IndexPair& ip)
+	bool operator==(const IndexPair& ip) const
 	{
 		return m_i[0] == ip.m_i[0] && m_i[1] == ip.m_i[1];
 	}

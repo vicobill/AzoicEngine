@@ -46,6 +46,15 @@ target_compile_options(${PROJECT_NAME} PRIVATE "/wd4996")
 #Disable mismatched exception specifications diagnosis
 target_compile_options(${PROJECT_NAME} PRIVATE "/Zc:noexceptTypes-")
 
+#Disable two-phase name lookup, the bundled WTL headers reference CDCHandle/CDC typedefs
+#before they are declared (C2065 under C++20 conformance mode)
+target_compile_options(${PROJECT_NAME} PRIVATE "/permissive")
+
+#Disable warnings emitted by the bundled WTL headers (treated as errors engine-wide)
+#C4302: truncation from 'LPCTSTR' to 'WORD'
+#C4838: conversion requires a narrowing conversion
+target_compile_options(${PROJECT_NAME} PRIVATE "/wd4302" "/wd4838")
+
 #Disable link warning LNK4221 (StdAfx.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library)
 set_target_properties(${PROJECT_NAME} PROPERTIES STATIC_LIBRARY_FLAGS "/ignore:4221")
 

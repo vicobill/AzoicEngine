@@ -584,7 +584,7 @@ void PropertyRowResourceSelector::redraw(IDrawContext& context)
 		icon = Icon(provider_->GetIcon(type_.c_str(), value_.c_str()));
 	bool canSelect = !multiValue() && provider_ && provider_->CanSelect(type_.c_str(), value_.c_str(), id_);
 
-	string text = multiValue() ? "..." : string(modified ? "*" : "") + getFilenameFromPath(valueAsString());
+	auto text = multiValue() ? string("...") : string(modified ? "*" : "") + getFilenameFromPath(valueAsString());
 	if (provider_)
 	{
 		int flags = 0;

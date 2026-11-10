@@ -80,7 +80,7 @@ public:
 	{
 
 		const string cacheFile = GetCacheFilepath();
-		m_assets = AssetLoader::LoadAssetsCached(cacheFile, [this](AssetLoader::Predicate& predicate)
+		m_assets = AssetLoader::LoadAssetsCached(cacheFile, [this](const AssetLoader::Predicate& predicate)
 		{
 			const bool bIgnorePaks = false;
 			return AssetLoader::LoadAssets(m_assetRootPaths, bIgnorePaks, predicate);

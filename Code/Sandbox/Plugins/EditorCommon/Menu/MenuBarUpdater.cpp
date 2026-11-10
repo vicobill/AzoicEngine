@@ -13,7 +13,8 @@ CMenuBarUpdater::CMenuBarUpdater(CAbstractMenu* pAbstractMenu, QMenuBar* pMenuBa
 	auto rebuild = [pAbstractMenu, pMenuBar]()
 	{
 		pMenuBar->clear();
-		pAbstractMenu->Build(MenuWidgetBuilders::CMenuBarBuilder(pMenuBar));
+		auto builder = MenuWidgetBuilders::CMenuBarBuilder(pMenuBar);
+		pAbstractMenu->Build(builder);
 	};
 
 	pAbstractMenu->signalActionAdded.Connect(rebuild, GetId());
@@ -30,7 +31,8 @@ CMenuUpdater::CMenuUpdater(CAbstractMenu* pAbstractMenu, QMenu* pMenu) : m_pAbst
 	auto rebuild = [pAbstractMenu, pMenu]()
 	{
 		pMenu->clear();
-		pAbstractMenu->Build(MenuWidgetBuilders::CMenuBuilder(pMenu));
+		auto builder = MenuWidgetBuilders::CMenuBuilder(pMenu);
+		pAbstractMenu->Build(builder);
 	};
 
 	pAbstractMenu->signalActionAdded.Connect(rebuild, GetId());

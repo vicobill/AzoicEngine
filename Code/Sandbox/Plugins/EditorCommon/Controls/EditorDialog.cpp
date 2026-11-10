@@ -113,7 +113,7 @@ CEditorDialog::CEditorDialog(const QString& moduleName, QWidget* parent /*= null
 	});
 }
 
-void CEditorDialog::AddPersonalizedSharedProperty(const QString& propName, std::function<QVariant()>& store, std::function<void(const QVariant&)>& restore)
+void CEditorDialog::AddPersonalizedSharedProperty(const QString& propName, const std::function<QVariant()>& store, const std::function<void(const QVariant&)>& restore)
 {
 	{
 		auto pEditor = GetIEditor();
@@ -144,7 +144,7 @@ void CEditorDialog::AddPersonalizedSharedProperty(const QString& propName, std::
 	});
 }
 
-void CEditorDialog::AddPersonalizedProjectProperty(const QString& propName, std::function<QVariant()>& store, std::function<void(const QVariant&)>& restore)
+void CEditorDialog::AddPersonalizedProjectProperty(const QString& propName, const std::function<QVariant()>& store, const std::function<void(const QVariant&)>& restore)
 {
 	{
 		auto pEditor = GetIEditor();

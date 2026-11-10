@@ -19,7 +19,7 @@
 
 void CTreeViewDialog::Initialize(QAbstractItemModel* pModel, int32 filterColumn, const std::vector<int32>& visibleColumns)
 {
-	QDeepFilterProxyModel::BehaviorFlags behavior = QDeepFilterProxyModel::AcceptIfChildMatches | QDeepFilterProxyModel::AcceptIfParentMatches;
+	QDeepFilterProxyModel::BehaviorFlags behavior = QDeepFilterProxyModel::BehaviorFlags( QDeepFilterProxyModel::AcceptIfChildMatches | QDeepFilterProxyModel::AcceptIfParentMatches);
 	QDeepFilterProxyModel* pProxy = new QDeepFilterProxyModel(behavior);
 	pProxy->setSourceModel(pModel);
 	pProxy->setFilterKeyColumn(filterColumn);

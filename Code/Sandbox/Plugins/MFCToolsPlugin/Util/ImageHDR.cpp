@@ -134,7 +134,7 @@ enum rgbe_error_codes
 };
 
 /* default error routine.  change this to change error handling */
-static int rgbe_error(int rgbe_error_code, char* msg)
+static int rgbe_error(int rgbe_error_code, const char* msg)
 {
 	switch (rgbe_error_code)
 	{

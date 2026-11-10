@@ -73,6 +73,8 @@ template<typename Tuple>
 class CAsyncTask : public CBaseTask<Tuple>, public IBackgroundTask
 {
 public:
+	using base_t = CBaseTask<Tuple>;
+
 	template<typename... T>
 	CAsyncTask(T&&... other)
 		: CBaseTask<Tuple>(std::forward<T>(other)...)
@@ -92,7 +94,7 @@ public:
 
 	virtual ETaskResult Work() override
 	{
-		Execute();
+		base_t::Execute();
 		return eTaskResult_Completed;
 	}
 };

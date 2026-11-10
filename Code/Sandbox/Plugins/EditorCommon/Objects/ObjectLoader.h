@@ -47,9 +47,9 @@ public:
 	CryGUID ResolveID(const CryGUID& id);
 
 	//! Set object resolve callback, it will be called once object with specified Id is loaded.
-	void SetResolveCallback(CBaseObject* fromObject, const CryGUID& objectId, ResolveObjRefFunctor1& func);
+	void SetResolveCallback(CBaseObject* fromObject, const CryGUID& objectId, const ResolveObjRefFunctor1& func);
 	//! Set object resolve callback, it will be called once object with specified Id is loaded.
-	void SetResolveCallback(CBaseObject* fromObject, const CryGUID& objectId, ResolveObjRefFunctor2& func, uint32 userData);
+	void SetResolveCallback(CBaseObject* fromObject, const CryGUID& objectId, const ResolveObjRefFunctor2& func, uint32 userData);
 	//! Resolve all object ids and call callbacks on resolved objects.
 	void ResolveObjects(bool bProcessEvents = false);
 

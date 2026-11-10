@@ -13,7 +13,7 @@ class QSearchBox;
 class EDITOR_COMMON_API CTreeViewDialog : public CEditorDialog
 {
 public:
-	CTreeViewDialog::CTreeViewDialog(QWidget* pParent)
+	explicit CTreeViewDialog(QWidget* pParent)
 		: CEditorDialog("TreeViewDialog", pParent)
 		, m_pSearchBox(nullptr)
 	{}

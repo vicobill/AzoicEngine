@@ -64,7 +64,7 @@ namespace Schematyc2
 	template <typename TYPE> inline ETypeFlags GetTypeFlags()
 	{
 		ETypeFlags typeFlags = ETypeFlags::None;
-		if(std::is_pod<TYPE>::value)
+		if(std::is_trivially_copyable<TYPE>::value && std::is_standard_layout<TYPE>::value)
 		{
 			typeFlags |= ETypeFlags::POD;
 		}

@@ -156,7 +156,8 @@ void CToolBarAreaManager::ShowContextMenu()
 	FillMenuForArea(&menuDesc, pCurrentArea);
 
 	QMenu menu;
-	menuDesc.Build(MenuWidgetBuilders::CMenuBuilder(&menu));
+	auto builder = MenuWidgetBuilders::CMenuBuilder(&menu);
+	menuDesc.Build(builder);
 
 	menu.exec(actionContextPosition);
 }

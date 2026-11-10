@@ -1717,7 +1717,8 @@ CRenderViewport::SPreviousContext CRenderViewport::SetCurrentContext()
 	SPreviousContext x;
 	m_currentContextWnd = GetSafeHwnd();
 
-	GetISystem()->SetViewCamera(CCamera(m_Camera));
+	CCamera camera(m_Camera);
+	GetISystem()->SetViewCamera(camera);
 
 	return x;
 }

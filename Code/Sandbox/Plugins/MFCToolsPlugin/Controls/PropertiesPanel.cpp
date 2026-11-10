@@ -113,7 +113,8 @@ void CPropertiesPanel::SetVarBlock(class CVarBlock* vb, const UpdateCallback& up
 	m_varBlock = vb;
 	m_pWndProps->AddVarBlock(m_varBlock);
 
-	m_pWndProps->SetUpdateCallback(functor(*this, &CPropertiesPanel::OnPropertyChanged));
+	CPropertyCtrl::UpdateVarCallback updateCallback = functor(*this, &CPropertiesPanel::OnPropertyChanged);
+	m_pWndProps->SetUpdateCallback(updateCallback);
 	m_pWndProps->ExpandAll();
 
 	if (resizeToFit)
@@ -155,7 +156,8 @@ void CPropertiesPanel::AddVars(CVarBlock* vb, const UpdateCallback& updCallback)
 
 	if (bNewBlock)
 	{
-		m_pWndProps->SetUpdateCallback(functor(*this, &CPropertiesPanel::OnPropertyChanged));
+		CPropertyCtrl::UpdateVarCallback updateCallback = functor(*this, &CPropertiesPanel::OnPropertyChanged);
+		m_pWndProps->SetUpdateCallback(updateCallback);
 		m_pWndProps->ExpandAll();
 
 		ResizeToFitProperties();

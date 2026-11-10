@@ -606,7 +606,7 @@ namespace CryMT
 	template<class T>
 	void CThreadSafePushContainer<T>::DestroyElements(T* pElements, uint32 numElements)
 	{
-		if (!std::is_pod<T>::value)
+		if (!std::is_trivially_destructible<T>::value)
 		{
 			for (uint32 i = 0; i < numElements; ++i)
 			{
@@ -625,7 +625,7 @@ namespace CryMT
 	template<typename... Args>
 	void CThreadSafePushContainer<T>::DefaultConstructElement(void* pElement, Args&&... args)
 	{
-		if (!std::is_pod<T>::value)
+		if (!std::is_trivial<T>::value)
 		{
 			::new(pElement) T(std::forward<Args>(args)...);
 		}

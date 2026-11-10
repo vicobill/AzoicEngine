@@ -4,6 +4,9 @@
 #include "EditorCommonAPI.h"
 #include "EditorFramework/PriorityCommandRegistry.h"
 
+#include <functional>
+#include <string>
+
 class QCommandAction;
 class CEditorWidget;
 
@@ -59,15 +62,7 @@ public:
 	//! /see SPrioritizedRegistry
 	template<class Ret, class Context, class... Params, class = EnableIfEditorContext<Context>>
 	QCommandAction* Register(const string& actionId, std::function<Ret(Context, Params...)> actionHandler, uintptr_t id,
-		EActionHandlerPermission perm = EActionHandlerPermission::Default, int priority = DEF_HANDLER_PRIORITY)
-	{
-		auto func = [this, actionHandler = std::move(actionHandler)](Params&&... params)
-		{
-			actionHandler(static_cast<Context>(m_widget.GetContextObject()), std::forward<Params>(params)...);
-		};
-
-		return m_widget.RegisterAction(actionId, std::move(func), perm, priority, id);
-	}
+		EActionHandlerPermission perm = EActionHandlerPermission::Default, int priority = DEF_HANDLER_PRIORITY);
 
 	//! Registers a member function an action in the registry of specific widget.
 	//! /param actionId id of the action to register.

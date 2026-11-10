@@ -21,7 +21,8 @@ void InitMenu(QMenu* pMenu, const CAbstractMenu* pAbstractMenu)
 	QObject::connect(pMenu, &QMenu::aboutToShow, [pAbstractMenu, pMenu]()
 	{
 		pAbstractMenu->signalAboutToShow(const_cast<CAbstractMenu*>(pAbstractMenu));
-		pAbstractMenu->Build(CMenuBuilder(pMenu));
+		auto builder = CMenuBuilder(pMenu);
+		pAbstractMenu->Build(builder);
 	});
 }
 

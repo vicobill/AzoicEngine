@@ -48,7 +48,7 @@ string PyGeneratePythonEditorAutocompleteFiles()
 
 		const auto& moduleName = pCommand->GetModule();
 
-		auto& fileIt = autocompleteFiles.find(moduleName);
+		auto fileIt = autocompleteFiles.find(moduleName);
 		if (fileIt == autocompleteFiles.cend())
 		{
 			std::ofstream ofs{ outputFolder + moduleName + ".py" };

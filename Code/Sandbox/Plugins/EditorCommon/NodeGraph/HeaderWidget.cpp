@@ -30,7 +30,7 @@ public:
 		SetDisplayIcon(&m_style.GetNodeIconViewPixmap(StyleState_Default));
 	}
 
-	CHeaderTypeIcon::~CHeaderTypeIcon()
+	~CHeaderTypeIcon()
 	{
 	}
 

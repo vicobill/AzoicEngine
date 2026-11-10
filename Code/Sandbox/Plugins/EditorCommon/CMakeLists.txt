@@ -963,6 +963,8 @@ target_include_directories(${THIS_PROJECT} PRIVATE "${CRYENGINE_DIR}/Code/Sandbo
 target_include_directories(${THIS_PROJECT} PRIVATE "${CRYENGINE_DIR}/Code/Sandbox/EditorQt/Include")
 
 target_include_directories(${THIS_PROJECT} PRIVATE "${CRY_EXTENSIONS_DIR}/CryLink/Interface")
+target_include_directories(${THIS_PROJECT} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+
 
 target_include_directories(${THIS_PROJECT} PRIVATE "${CRYENGINE_DIR}/Code/Sandbox/Libs/CryQt")
 target_link_libraries(${THIS_PROJECT} PRIVATE CryQt)

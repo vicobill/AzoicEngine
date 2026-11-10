@@ -193,7 +193,7 @@ QVariant CCommandModel::data(const QModelIndex& index, int role /* = Qt::Display
 				}
 			}
 		}
-	case Roles::CommandDescriptionRole:
+	case (int)Roles::CommandDescriptionRole:
 		{
 			QModelIndex parent = index.parent();
 			if (parent.isValid())
@@ -233,7 +233,7 @@ QVariant CCommandModel::data(const QModelIndex& index, int role /* = Qt::Display
 				break;
 			}
 		}
-	case Roles::SearchRole:
+	case (int)Roles::SearchRole:
 		{
 			QModelIndex parent = index.parent();
 			if (parent.isValid())
@@ -246,7 +246,7 @@ QVariant CCommandModel::data(const QModelIndex& index, int role /* = Qt::Display
 			}
 		}
 		break;
-	case Roles::CommandPointerRole:
+	case (int)Roles::CommandPointerRole:
 		{
 			return QVariant::fromValue((CCommand*)GetCommand(index));
 		}

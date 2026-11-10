@@ -180,7 +180,7 @@ QVariant CNotificationModel::data(const QModelIndex& index, int role /* = Qt::Di
 			}
 		}
 		break;
-	case Roles::SortRole:
+	case (int)Roles::SortRole:
 	{
 		switch (index.column())
 		{
@@ -200,7 +200,7 @@ QVariant CNotificationModel::data(const QModelIndex& index, int role /* = Qt::Di
 			return pNotification->GetMessage();
 		}
 	}
-	case Roles::Type:
+	case (int)Roles::Type:
 		return pNotification->GetType();
 		break;
 	}

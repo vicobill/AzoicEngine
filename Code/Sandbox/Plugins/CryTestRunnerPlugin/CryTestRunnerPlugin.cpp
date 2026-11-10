@@ -133,7 +133,7 @@ public:
 		m_system.SignalTestsStarted.Connect(this, &CCryTestBrowserWidget::OnTestsStarted);
 		m_system.SignalTestsFinished.Connect(this, &CCryTestBrowserWidget::OnTestsFinished);
 
-		const QDeepFilterProxyModel::BehaviorFlags behavior = QDeepFilterProxyModel::AcceptIfChildMatches | QDeepFilterProxyModel::AcceptIfParentMatches;
+		const QDeepFilterProxyModel::BehaviorFlags behavior = QDeepFilterProxyModel::BehaviorFlags(QDeepFilterProxyModel::AcceptIfChildMatches) | QDeepFilterProxyModel::AcceptIfParentMatches;
 		m_pFilterProxy = new QDeepFilterProxyModel(behavior);
 		m_pFilterProxy->setSourceModel(m_pModel);
 		m_pFilterProxy->setFilterKeyColumn(-1);
@@ -228,7 +228,8 @@ public:
 		});
 
 		QMenu menu;
-		abstractMenu.Build(MenuWidgetBuilders::CMenuBuilder(&menu));
+		MenuWidgetBuilders::CMenuBuilder builder(&menu);
+		abstractMenu.Build(builder);
 
 		if (menu.actions().count() > 0)
 		{

@@ -82,8 +82,8 @@ enum eStatusCmdMode
 struct SCrySessionID : public CMultiThreadRefCount
 {
 	// <interfuscator:shuffle>
-	virtual bool operator==(const SCrySessionID& other) = 0;
-	virtual bool operator<(const SCrySessionID& other) = 0;
+	virtual bool operator==(const SCrySessionID& other) const = 0;
+	virtual bool operator<(const SCrySessionID& other) const = 0;
 	virtual bool IsFromInvite() const = 0;
 	virtual void AsCStr(char* pOutString, int inBufferSize) const = 0;
 	// </interfuscator:shuffle>

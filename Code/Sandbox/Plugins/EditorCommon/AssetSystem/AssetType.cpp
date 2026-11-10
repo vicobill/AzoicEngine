@@ -445,7 +445,7 @@ bool CAssetType::OnCopy(INewAsset& asset, CAsset& assetToCopy) const
 		{
 			newFile = PathUtil::AdjustCasing(PathUtil::Make(destinationFolder, PathUtil::GetFile(newFile)));
 			Private_AssetType::CopyAssetFile(file, newFile, 
-				assetToCopy.GetType()->HasDerivedFiles() ? PathUtil::GetEditorCachePath() : "");
+				assetToCopy.GetType()->HasDerivedFiles() ? PathUtil::GetEditorCachePath() : string());
 			file = newFile;
 		}
 	}
@@ -539,7 +539,7 @@ bool CAssetType::RenameAsset(CAsset* pAsset, const char* szNewName) const
 		if (Private_AssetType::TryReplaceFilename(oldName, newName, file, newFile))
 		{
 			if (Private_AssetType::RenameAssetFile(file, newFile, 
-				pAsset->GetType()->HasDerivedFiles() ? PathUtil::GetEditorCachePath() : ""))
+				pAsset->GetType()->HasDerivedFiles() ? PathUtil::GetEditorCachePath() : string()))
 			{
 				file = newFile;
 			}
@@ -634,7 +634,7 @@ bool CAssetType::MoveAsset(CAsset* pAsset, const char* szDestinationFolder, bool
 	{
 		string newFile = PathUtil::Make(szDestinationFolder, PathUtil::GetFile(file));
 		if (Private_AssetType::RenameAssetFile(file, newFile,
-			pAsset->GetType()->HasDerivedFiles() ? PathUtil::GetEditorCachePath() : ""))
+			pAsset->GetType()->HasDerivedFiles() ? PathUtil::GetEditorCachePath() : string()))
 		{
 			file = newFile;
 		}

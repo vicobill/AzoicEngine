@@ -342,24 +342,24 @@ endfunction()
 
 # Common library requirements
 macro(use_fbx_sdk)
+	# use FBX SDK 2020.3.1 for VS2022
 	target_include_directories(${THIS_PROJECT} PRIVATE "${SDK_DIR}/FbxSdk/include")
 	target_compile_definitions(${THIS_PROJECT} PRIVATE -DFBXSDK_NEW_API=1 -DTOOLS_ENABLE_FBX_SDK)
-	if (MSVC_VERSION GREATER 1900) # Visual Studio > 2015
-		set(FBX_SUBFOLDER vs2015)
-	elseif (MSVC_VERSION EQUAL 1900) # Visual Studio 2015
-		set(FBX_SUBFOLDER vs2015)
-	elseif (MSVC_VERSION EQUAL 1800) # Visual Studio 2013
-		set(FBX_SUBFOLDER vs2013)
-	elseif (MSVC_VERSION EQUAL 1700) # Visual Studio 2012
-		set(FBX_SUBFOLDER vs2012)
-	endif()
+	# if (MSVC_VERSION GREATER 1900) # Visual Studio > 2015
+		set(FBX_SUBFOLDER vs2022)
+	# endif()
 
 	set(FBX_PATH "${SDK_DIR}/FbxSdk/lib/${FBX_SUBFOLDER}/x64")
+	if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+		# ARM64 特定配置
+		set(FBX_PATH "${SDK_DIR}/FbxSdk/lib/${FBX_SUBFOLDER}/arm64")
+	endif()
+		
 
 	set_libpath_flag()
 	set_property(TARGET ${THIS_PROJECT} APPEND_STRING PROPERTY LINK_FLAGS_DEBUG "${LIBPATH_FLAG}\"${FBX_PATH}/debug\"")
 	set_property(TARGET ${THIS_PROJECT} APPEND_STRING PROPERTY LINK_FLAGS_RELEASE "${LIBPATH_FLAG}\"${FBX_PATH}/release\"")
-	target_link_libraries(${THIS_PROJECT} PRIVATE libfbxsdk-mt)		
+	target_link_libraries(${THIS_PROJECT} PRIVATE libfbxsdk-mt alembic-mt libxml2-mt zlib-mt Bcrypt)		
 endmacro()
 
 macro(use_substance)

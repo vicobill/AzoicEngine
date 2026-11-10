@@ -1203,7 +1203,7 @@ CrySessionID CCryLANMatchMaking::ReadSessionIDFromPacket(CCryLobbyPacket* pPacke
 
 			//-- Safe to use the equals operator here, since the fields tested in the operator are the same ones
 			//-- written to the packet.
-			if (!(*pLanID == blank))
+			if (!((const SCrySessionID&)*pLanID == blank))
 			{
 				//-- assume it's a valid session id
 				return returnId;

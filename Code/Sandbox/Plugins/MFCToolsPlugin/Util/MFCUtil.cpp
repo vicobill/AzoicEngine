@@ -237,7 +237,7 @@ ColorF CMFCUtils::ColorGammaToLinear(COLORREF col)
 
 QPoint CMFCUtils::CPointToQPointLocal(const QWidget* widget, const CPoint& point)
 {
-	return QPoint(QtUtil::QtScale(widget, point.x), QtUtil::QtScale(widget, point.y));
+	return QPoint(QtUtil::QtScale(widget, (int)point.x), QtUtil::QtScale(widget, (int)point.y));
 }
 
 bool CMFCUtils::ExecuteConsoleApp(const string& CommandLine, string& OutputText, bool bNoTimeOut /*= false*/, bool bShowWindow /*= false*/)

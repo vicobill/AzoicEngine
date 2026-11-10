@@ -614,10 +614,10 @@ struct SVariableSerializer
 		IVariable::EType type = pVar->GetType();
 
 		// ignore invisible variables (assuming we serialize for UI)
-		if (pVar->GetFlags() & IVariable::UI_INVISIBLE)
+		if (pVar->GetFlags() & IVariable::EFlags::UI_INVISIBLE)
 			return;
 
-		if (type == IVariable::ARRAY)
+		if (type == IVariable::EType::ARRAY)
 		{
 			int numv = pVar->GetNumVariables();
 			if (numv > 0)
@@ -631,13 +631,13 @@ struct SVariableSerializer
 				}
 			}
 		}
-		else if (type == IVariable::BOOL)
+		else if (type == IVariable::EType::BOOL)
 		{
 			SerializeT<bool>(pVar, ar, name, label);
 		}
-		else if (type == IVariable::INT)
+		else if (type == IVariable::EType::INT)
 		{
-			if (dataType == IVariable::DT_COLOR)
+			if (dataType == IVariable::EDataType::DT_COLOR)
 			{
 				int abgr = 0;
 				pVar->Get(abgr);
@@ -654,7 +654,7 @@ struct SVariableSerializer
 				}
 			}
 			// Copy use case from PropertyItem control
-			else if (dataType == IVariable::DT_UIENUM)
+			else if (dataType == IVariable::EDataType::DT_UIENUM)
 			{
 				CUIEnumsDatabase_SEnum* m_pEnumDBItem = GetIEditor()->GetUIEnumsDatabase()->FindEnum(label);
 
@@ -703,17 +703,17 @@ struct SVariableSerializer
 				SerializeNumericalT<int>(pVar, ar, name, label);
 			}
 		}
-		else if (type == IVariable::FLOAT)
+		else if (type == IVariable::EType::FLOAT)
 		{
 			SerializeNumericalT<float>(pVar, ar, name, label);
 		}
-		else if (type == IVariable::VECTOR2)
+		else if (type == IVariable::EType::VECTOR2)
 		{
 			SerializeT<Vec2>(pVar, ar, name, label);
 		}
-		else if (type == IVariable::VECTOR)
+		else if (type == IVariable::EType::VECTOR)
 		{
-			if (dataType == IVariable::DT_COLOR)
+			if (dataType == IVariable::EDataType::DT_COLOR)
 			{
 				Vec3 v;
 				pVar->Get(v);
@@ -733,22 +733,22 @@ struct SVariableSerializer
 				SerializeT<Vec3>(pVar, ar, name, label);
 			}
 		}
-		else if (type == IVariable::VECTOR4)
+		else if (type == IVariable::EType::VECTOR4)
 		{
 			SerializeT<Vec4>(pVar, ar, name, label);
 		}
-		else if (type == IVariable::QUAT)
+		else if (type == IVariable::EType::QUAT)
 		{
 			SerializeT<Quat>(pVar, ar, name, label);
 		}
-		else if (type == IVariable::STRING)
+		else if (type == IVariable::EType::STRING)
 		{
 			// Copy use case from PropertyItem control
-			if (dataType == IVariable::DT_UIENUM || dataType == IVariable::DT_EQUIP)
+			if (dataType == IVariable::EDataType::DT_UIENUM || dataType == IVariable::EDataType::DT_EQUIP)
 			{
 				CUIEnumsDatabase_SEnum* m_pEnumDBItem;
 
-				if (dataType == IVariable::DT_EQUIP)
+				if (dataType == IVariable::EDataType::DT_EQUIP)
 				{
 					// hacky solution, use internal name for enum database to support many script variable names
 					// all current equip_ types use EquipmentPack name but better be safe than sorry

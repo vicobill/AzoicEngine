@@ -25,7 +25,7 @@ struct Element
 		SetVertex(pObject, vertex);
 	}
 	Element   GetMirroredElement(const BrushPlane& mirrorPlane) const;
-	bool      operator==(const Element& info);
+	bool      operator==(const Element& info) const;
 	void      Invalidate();
 	bool      IsEquivalent(const Element& elementInfo) const;
 

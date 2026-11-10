@@ -79,7 +79,8 @@ void CPinGridNodeContentWidget::OnInputEvent(CNodeWidget* pSender, SMouseInputEv
 			  args.GetLocalPos(), args.GetScenePos(), args.GetScreenPos(),
 			  args.GetLastLocalPos(), args.GetLastScenePos(), args.GetLastScreenPos());
 
-			GetView().OnPinMouseEvent(m_pLastEnteredPin, SPinMouseEventArgs(mouseArgs));
+			auto arg = SPinMouseEventArgs(mouseArgs);
+			GetView().OnPinMouseEvent(m_pLastEnteredPin, arg);
 			// ~TODO
 
 			m_pLastEnteredPin = nullptr;
@@ -108,7 +109,8 @@ void CPinGridNodeContentWidget::OnInputEvent(CNodeWidget* pSender, SMouseInputEv
 		  args.GetLocalPos(), args.GetScenePos(), args.GetScreenPos(),
 		  args.GetLastLocalPos(), args.GetLastScenePos(), args.GetLastScreenPos());
 
-		GetView().OnPinMouseEvent(pHitPinWidget, SPinMouseEventArgs(mouseArgs));
+		auto arg = SPinMouseEventArgs(mouseArgs);
+		GetView().OnPinMouseEvent(pHitPinWidget, arg);
 		// ~TODO
 
 		args.SetAccepted(true);

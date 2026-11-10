@@ -737,7 +737,8 @@ bool CAxisRotateGizmo::HitTest(HitContext& hc)
 		const float halfHeight = 0.5f * height;
 
 		Vec3 isect;
-		if (Ray_RingCylinder(ray, m_position - halfHeight * m_axis, m_axis, height, radius, outerRadius, isect))
+		Vec3 origin = m_position - halfHeight * m_axis;
+		if (Ray_RingCylinder(ray, origin, m_axis, height, radius, outerRadius, isect))
 		{
 			// find difference between intersection and center of cylinder
 			isect -= m_position;

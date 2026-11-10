@@ -243,9 +243,11 @@ namespace Cry
 #ifndef RELEASE
 				for (int i = 0, n = (int)EGear::DefaultCount; i < n; ++i)
 				{
-					if (m_gearParams.m_gears.Size() <= i || m_gearParams.m_gears.At(i).m_ratio != i)
+					auto& gears = m_gearParams.m_gears;
+					
+					if (gears.Size() <= i || (float)gears.At(i).m_ratio != (float)i)
 					{
-						m_gearParams.m_gears.Insert(i, SGearParams::SGear{ (float)i });
+						gears.Insert(i, SGearParams::SGear{ (float)i });
 					}
 				}
 #endif

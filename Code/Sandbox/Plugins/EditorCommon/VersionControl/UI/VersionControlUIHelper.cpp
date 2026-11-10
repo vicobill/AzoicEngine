@@ -34,7 +34,7 @@ public:
 		pComboBox->AddItem(QObject::tr("Deleted remotely"), CVersionControlFileStatus::eState_DeletedRemotely);
 		pComboBox->AddItem(QObject::tr("Up-to-Date"), UP_TO_DATE_VAL);
 
-		QVariant& val = pFilter->GetFilterValue();
+		const QVariant& val = pFilter->GetFilterValue();
 		if (val.isValid())
 		{
 			bool ok = false;

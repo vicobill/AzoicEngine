@@ -732,7 +732,7 @@ inline IEntityClass* RegisterEntityClassWithDefaultComponent(
   const CryGUID classGUID,           // This is a guid for the Entity Class, not for component
   const CryGUID componentUniqueGUID, // This is not a class type of component guid, but a unique guid of this unique component inside entity
   bool bIconOnTop = false,
-  IFlowNodeFactory* pOptionalFlowNodeFactory = nullptr
+  struct IFlowNodeFactory* pOptionalFlowNodeFactory = nullptr
   )
 {
 	const CEntityComponentClassDesc* pClassDesc = &Schematyc::GetTypeDesc<T>();

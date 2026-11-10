@@ -9,6 +9,8 @@
 #include <CryString/CryPath.h>
 #include <thread>
 
+#include <chrono>
+
 namespace Private_FileUtil
 {
 

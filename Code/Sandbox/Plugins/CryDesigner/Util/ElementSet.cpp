@@ -23,7 +23,7 @@ Element Element::GetMirroredElement(const BrushPlane& mirrorPlane) const
 	return mirroredElement;
 }
 
-bool Element::operator==(const Element& info)
+bool Element::operator==(const Element& info) const
 {
 	if (m_Vertices.size() != info.m_Vertices.size())
 		return false;

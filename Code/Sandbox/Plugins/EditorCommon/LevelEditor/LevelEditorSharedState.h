@@ -134,7 +134,7 @@ private:
 	Axis                  m_axisConstraint;
 	EditMode              m_editMode;
 
-	CoordSystem           m_coordSystemForEditMode[EditMode::LastEditMode];
+	CoordSystem           m_coordSystemForEditMode[(size_t)EditMode::LastEditMode];
 
 	_smart_ptr<CEditTool> m_pEditTool;
 	CPickObjectTool*      m_pPickTool;

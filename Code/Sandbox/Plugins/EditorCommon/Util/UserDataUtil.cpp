@@ -56,8 +56,8 @@ namespace Private_UserDataUtil
 				// if type defers from default type, use preferred value
 				if (defaultValue.type() == QMetaType::QVariantMap && preferredValue.type() == QMetaType::QVariantMap)
 				{
-					QVariantMap& defaultVariantMap = defaultData[preferredDataKey].toMap();
-					QVariantMap& preferredVariantMap = preferredData[preferredDataKey].toMap();
+					const QVariantMap& defaultVariantMap = defaultData[preferredDataKey].toMap();
+					const QVariantMap& preferredVariantMap = preferredData[preferredDataKey].toMap();
 					QVariantMap mergedVariantMap;
 
 					Merge(defaultVariantMap, preferredVariantMap, mergedVariantMap);

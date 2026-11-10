@@ -131,7 +131,9 @@ namespace Loader_Private
 				continue;
 			}
 
-			std::unique_ptr<SAssetInfo> pAssetInfo = std::unique_ptr<SAssetInfo>(new SAssetInfo{ alias.empty() ? szRelativeFilePath : PathUtil::Make(alias, szRelativeFilePath), timestamp });
+			std::unique_ptr<SAssetInfo> pAssetInfo = std::unique_ptr<SAssetInfo>(new SAssetInfo{
+				alias.empty() ? string(szRelativeFilePath ): string(PathUtil::Make(alias, szRelativeFilePath)), 
+				timestamp });
 			if (!pReader->ReadFileAsync(filePath, xmlCompletionHandler, pAssetInfo.get()))
 			{
 				CryWarning(EValidatorModule::VALIDATOR_MODULE_EDITOR, EValidatorSeverity::VALIDATOR_ERROR, "Failed to read asset file: \"%s\".", filePath.c_str());

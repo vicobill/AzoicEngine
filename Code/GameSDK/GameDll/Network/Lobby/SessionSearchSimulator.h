@@ -53,14 +53,14 @@ struct SCryFakeSessionID : public SCrySessionID
 {
 	char m_idStr[CRYSESSIONID_STRINGLEN];
 	
-	bool operator == (const SCrySessionID &other)
+	bool operator == (const SCrySessionID &other) const
 	{
 		char otherIdStr[CRYSESSIONID_STRINGLEN];
 		other.AsCStr( otherIdStr, CRYSESSIONID_STRINGLEN );
 		return ( strcmpi( m_idStr, otherIdStr ) == 0 );
 	}
 	
-	bool operator < (const SCrySessionID &other)
+	bool operator < (const SCrySessionID &other) const
 	{
 		char otherIdStr[CRYSESSIONID_STRINGLEN];
 		other.AsCStr( otherIdStr, CRYSESSIONID_STRINGLEN );

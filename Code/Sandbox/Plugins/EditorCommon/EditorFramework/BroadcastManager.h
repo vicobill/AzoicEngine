@@ -78,13 +78,13 @@ public:
 	CBroadcastManager();
 	~CBroadcastManager();
 
-	template<typename Function, typename std::enable_if<IsCallable<Function>::value,int>::type* = 0>
+	template<typename Function, typename std::enable_if<IsCallable<Function>::value,int>::type* = nullptr>
 	void Connect(BroadcastEvent::EventType type, Function&& func, uintptr_t id = 0)
 	{
 		m_listeners[type].Connect(func, id);
 	}
 
-	template<typename Object, typename MemberFunction, typename std::enable_if<SFuncInfo<MemberFunction>::isMemberFunction, int>::type* = 0>
+	template<typename Object, typename MemberFunction, typename std::enable_if<SFuncInfo<MemberFunction>::isMemberFunction, int>::type* = nullptr>
 	void Connect(BroadcastEvent::EventType type, Object* pObject, MemberFunction function, uintptr_t forceId = 0)
 	{
 		m_listeners[type].Connect(pObject, function, forceId);

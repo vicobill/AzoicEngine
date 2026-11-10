@@ -1210,7 +1210,7 @@ struct CEngineFileDialog::Implementation
 			m_ui.pSplitter->restoreState(state);
 		});
 
-		m_dialog->AddPersonalizedProjectProperty("history", [this]()
+		m_dialog->AddPersonalizedProjectProperty(QString("history"), [this]()
 		{
 			//keep maximum 30 items in the history
 			return QVariant(m_history.mid(0, 30));
@@ -1221,7 +1221,7 @@ struct CEngineFileDialog::Implementation
 			m_models.pHistoryModel->AddEntries(m_history);
 		});
 
-		m_dialog->AddPersonalizedProjectProperty("favorites", [this]()
+		m_dialog->AddPersonalizedProjectProperty(QString("favorites"), [this]()
 		{
 			return QVariant(m_favorites);
 		}, [this](const QVariant& variant)

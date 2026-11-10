@@ -466,17 +466,19 @@ struct container_object_deleter
 };
 
 //! Convert arbitrary class to const char*.
+//! Types convertible to const char* (CryString, literals, ...) are returned as-is,
+//! otherwise the type is expected to provide c_str() (e.g. std::string).
 template<class Type>
 inline const char* constchar_cast(const Type& type)
 {
-	return type;
-}
-
-//! Specialization of string to const char cast.
-template<>
-inline const char* constchar_cast(const string& type)
-{
-	return type.c_str();
+	if constexpr (std::is_convertible<const Type&, const char*>::value)
+	{
+		return type;
+	}
+	else
+	{
+		return type.c_str();
+	}
 }
 
 //! Case sensetive less key for any type convertable to const char*.

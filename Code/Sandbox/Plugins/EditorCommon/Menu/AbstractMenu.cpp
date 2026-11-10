@@ -159,7 +159,8 @@ void CAbstractMenu::AddAction(QAction* pAction, int sectionHint, int priorityHin
 	m_actionItems.emplace_back(new SActionItem(pAction, GetPriorityFromHint(priorityHint, section), section));
 	InsertItem(m_actionItems.back().get());
 	signalActionAdded(pAction);
-	signalDescendantModified(CActionAddedEvent(pAction));
+	auto evt = CActionAddedEvent(pAction);
+	signalDescendantModified(evt);
 }
 
 QCommandAction* CAbstractMenu::CreateCommandAction(const char* szCommand, int sectionHint /*= eSections_Default*/, int priorityHint /*= ePriorities_Append*/)
@@ -206,7 +207,8 @@ void CAbstractMenu::OnMenuAdded(CAbstractMenu* pMenu)
 
 	pMenu->signalActionAdded.Connect([this](QAction* pAction)
 	{
-		signalDescendantModified(CActionAddedEvent(pAction));
+			auto evt = CActionAddedEvent(pAction);
+		signalDescendantModified(evt);
 	});
 }
 

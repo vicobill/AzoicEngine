@@ -151,10 +151,10 @@ public:
 
 		if (index.column() == 0)
 		{
-			return flags | Qt::ItemIsUserCheckable;
+			return Qt::ItemFlags(flags | Qt::ItemIsUserCheckable);
 		}
 
-		return flags;
+		return Qt::ItemFlags(flags);
 	}
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const override

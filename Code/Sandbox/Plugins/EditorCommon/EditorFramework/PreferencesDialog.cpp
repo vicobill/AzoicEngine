@@ -132,7 +132,7 @@ QPreferencesDialog::QPreferencesDialog(QWidget* pParent /*= nullptr*/)
 	{
 		auto moduleIdx = ite->first.find_last_of("/");
 		string module = ite->first.Mid(moduleIdx + 1, ite->first.size() - moduleIdx);
-		m_pTreeView->AddEntry(ite->first, ite->first, module == szGeneral ? "aGeneral" : "z" + module);
+		m_pTreeView->AddEntry(ite->first, ite->first, module == szGeneral ? string("aGeneral") : string("z") + module);
 	}
 	m_pTreeView->ExpandAll();
 

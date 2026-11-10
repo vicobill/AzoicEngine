@@ -476,8 +476,7 @@ void QPropertyTree::OnFindNext()
 		m_lastSearchText = searchText;
 		m_pCurrentSearchRow = nullptr;
 	}
-
-	const PropertyTree::CRowModel* pRow = DoFind(m_pCurrentSearchRow ? m_pCurrentSearchRow : m_pRoot, searchText, false);
+	const PropertyTree::CRowModel* pRow = DoFind(m_pCurrentSearchRow ? m_pCurrentSearchRow.get() : m_pRoot.get(), searchText, false);
 	if (pRow)
 	{
 		m_pCurrentSearchRow = pRow;

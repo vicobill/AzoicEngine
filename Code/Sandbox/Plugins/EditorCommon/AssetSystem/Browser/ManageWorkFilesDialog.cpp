@@ -115,7 +115,7 @@ public:
 
 		const static int flags = Qt::ItemIsEnabled | Qt::ItemNeverHasChildren;
 
-		return flags;
+		return Qt::ItemFlags(flags);
 	}
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const override

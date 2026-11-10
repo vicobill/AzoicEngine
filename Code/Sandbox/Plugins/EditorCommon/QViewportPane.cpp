@@ -139,7 +139,8 @@ void QViewportWidget::mouseDoubleClickEvent(QMouseEvent* event)
 
 	if (ShouldForwardEvent())
 	{
-		if (m_viewport->MouseCallback(key, QPointToCPointLocal(this, event->pos()), GetMouseFlags(event->buttons(), event->modifiers())))
+		CPoint point = QPointToCPointLocal(this, event->pos());
+		if (m_viewport->MouseCallback(key, point, GetMouseFlags(event->buttons(), event->modifiers())))
 			return;
 	}
 
@@ -159,7 +160,8 @@ void QViewportWidget::mousePressEvent(QMouseEvent* event)
 		else if (event->button() == Qt::MouseButton::MiddleButton)
 			key = eMouseMDown;
 
-		m_viewport->MouseCallback(key, QPointToCPointLocal(this, event->pos()), GetMouseFlags(event->buttons(), event->modifiers()));
+		CPoint point = QPointToCPointLocal(this, event->pos());
+		m_viewport->MouseCallback(key, point, GetMouseFlags(event->buttons(), event->modifiers()));
 	}
 	else
 	{
@@ -196,7 +198,8 @@ void QViewportWidget::mouseReleaseEvent(QMouseEvent* event)
 		else if (event->button() == Qt::MouseButton::MiddleButton)
 			key = eMouseMUp;
 
-		m_viewport->MouseCallback(key, QPointToCPointLocal(this, event->pos()), GetMouseFlags(event->buttons(), event->modifiers()));
+		CPoint point = QPointToCPointLocal(this, event->pos());
+		m_viewport->MouseCallback(key, point, GetMouseFlags(event->buttons(), event->modifiers()));
 	}
 	else if (gEnv->pHardwareMouse)
 	{
@@ -251,7 +254,8 @@ void QViewportWidget::wheelEvent(QWheelEvent* event)
 	if (ShouldForwardEvent())
 	{
 		int zDelta = event->delta();
-		if (m_viewport->MouseCallback(eMouseWheel, CPoint(zDelta, zDelta), GetWheelFlags(event)))
+		CPoint point(zDelta, zDelta);
+		if (m_viewport->MouseCallback(eMouseWheel, point, GetWheelFlags(event)))
 			return;
 	}
 	else if (gEnv->pHardwareMouse)
@@ -270,7 +274,8 @@ void QViewportWidget::enterEvent(QEvent* pEvent)
 	if (ShouldForwardEvent())
 	{
 		QPoint point = QtUtil::GetMousePosition(this);
-		m_viewport->MouseCallback(eMouseEnter, QPointToCPointLocal(this, point), GetFlagsStatic());
+		CPoint cpoint = QPointToCPointLocal(this, point);
+		m_viewport->MouseCallback(eMouseEnter, cpoint, GetFlagsStatic());
 	}
 	else
 	{
@@ -286,7 +291,8 @@ void QViewportWidget::leaveEvent(QEvent*)
 	if (ShouldForwardEvent())
 	{
 		QPoint point = QtUtil::GetMousePosition(this);
-		m_viewport->MouseCallback(eMouseLeave, QPointToCPointLocal(this, point), GetFlagsStatic());
+		CPoint cpoint = QPointToCPointLocal(this, point);
+		m_viewport->MouseCallback(eMouseLeave, cpoint, GetFlagsStatic());
 	}
 }
 
@@ -313,7 +319,8 @@ void QViewportWidget::focusInEvent(QFocusEvent* event)
 	if (ShouldForwardEvent())
 	{
 		QPoint point = QtUtil::GetMousePosition(this);
-		m_viewport->MouseCallback(eMouseFocusEnter, QPointToCPointLocal(this, point), GetFlagsStatic());
+		CPoint cpoint = QPointToCPointLocal(this, point);
+		m_viewport->MouseCallback(eMouseFocusEnter, cpoint, GetFlagsStatic());
 	}
 	else
 	{
@@ -331,7 +338,8 @@ void QViewportWidget::focusOutEvent(QFocusEvent* event)
 	if (ShouldForwardEvent())
 	{
 		QPoint point = QtUtil::GetMousePosition(this);
-		m_viewport->MouseCallback(eMouseFocusLeave, QPointToCPointLocal(this, point), GetFlagsStatic());
+		CPoint cpoint = QPointToCPointLocal(this, point);
+		m_viewport->MouseCallback(eMouseFocusLeave, cpoint, GetFlagsStatic());
 	}
 	else
 	{
@@ -342,20 +350,20 @@ void QViewportWidget::focusOutEvent(QFocusEvent* event)
 	}
 }
 
-template<typename T>
-class ScaledDropEvent : public T
+template<std::derived_from<QDropEvent> T>
+class ScaledDropEvent : public T 
 {
 public:
 	QPointF scale(QWidget* scaleSource)
 	{
-		QPointF oldP = p;
-		p = QtUtil::PixelScale(scaleSource, p);
+		QPointF oldP = this->p;
+		this->p = QtUtil::PixelScale(scaleSource, this->p);
 		return oldP;
 	}
 
 	void restore(QPointF oldP)
 	{
-		p = oldP;
+		this->p = oldP;
 	}
 };
 

@@ -18,8 +18,9 @@ bool CPreviewToolTip::ShowTrackingToolTip(const char* szAssetPath, QWidget* pare
 	{
 		CPreviewToolTip* pPreviewToolTip = new CPreviewToolTip(szAssetPath);
 		pPreviewToolTip->SetPreviewWidget(pPreviewWidget);
-
-		QTrackingTooltip::ShowTrackingTooltip(QSharedPointer<QTrackingTooltip>(pPreviewToolTip, &QObject::deleteLater));
+		
+		auto sharePtr = QSharedPointer<QTrackingTooltip>(pPreviewToolTip, &QObject::deleteLater);
+		QTrackingTooltip::ShowTrackingTooltip(sharePtr);
 		return true;
 	}
 

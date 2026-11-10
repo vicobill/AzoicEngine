@@ -582,7 +582,7 @@ struct SDeformInfo
 		m_vNoiseScale = Vec3(1, 1, 1);
 	}
 
-	inline bool operator==(const SDeformInfo& m)
+	inline bool operator==(const SDeformInfo& m) const
 	{
 		if (m_eType == m.m_eType &&
 		    m_WaveX == m.m_WaveX && m_WaveY == m.m_WaveY &&
@@ -595,7 +595,7 @@ struct SDeformInfo
 		return false;
 	}
 
-	int Size()
+	int Size() const
 	{
 		return sizeof(SDeformInfo);
 	}

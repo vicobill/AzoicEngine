@@ -121,7 +121,8 @@ std::vector<CAsset*> LoadAssetsCached(const char* szCacheFilename, AssetLoaderFu
 	using namespace AssetCache_Private;
 
 	std::vector<CAsset*> cache;
-	if (!Serialization::LoadJsonFile(SCache(cache), szCacheFilename))
+	auto c = SCache(cache);
+	if (!Serialization::LoadJsonFile(c, szCacheFilename))
 	{
 		return assetLoader([](auto, auto)
 		{

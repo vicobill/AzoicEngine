@@ -395,7 +395,7 @@ inline std::function<Sig1> function_cast(const std::function<Sig2>& f)
 	return CryFunctionPrivate::FunctionWrapper<Sig1>::Cast(f);
 }
 
-template<typename Sig1, typename Function, typename std::enable_if<IsCallable<Function>::value, int>::type* = 0>
+template<typename Sig1, typename Function, typename std::enable_if<IsCallable<Function>::value, int>::type* = nullptr>
 inline std::function<Sig1> function_cast(const Function& f)
 {
 	typedef typename SFuncInfo<Function>::Signature Sig2;
@@ -411,7 +411,7 @@ template<typename Object, typename Function> struct MemberFunctionWrapper {};
 template<typename Object, typename Object2, typename Ret>
 struct MemberFunctionWrapper<Object, Ret (Object2::*)()>
 {
-	typedef std::function<Ret()> ReturnType;
+	using ReturnType = std::function<Ret ()>;
 
 	static ReturnType Wrap(Object* obj, Ret (Object2::* fun)()) { return [=]() { return (obj->*fun)(); }; }
 };
@@ -419,7 +419,7 @@ struct MemberFunctionWrapper<Object, Ret (Object2::*)()>
 template<typename Object, typename Object2, typename Ret, typename Arg1>
 struct MemberFunctionWrapper<Object, Ret (Object2::*)(Arg1)>
 {
-	typedef std::function<Ret(Arg1)> ReturnType;
+	using ReturnType = std::function<Ret (Arg1)>;
 
 	static ReturnType Wrap(Object* obj, Ret (Object2::* fun)(Arg1)) { return [=](Arg1 arg1) { return (obj->*fun)(arg1); }; }
 };
@@ -427,7 +427,7 @@ struct MemberFunctionWrapper<Object, Ret (Object2::*)(Arg1)>
 template<typename Object, typename Object2, typename Ret, typename Arg1, typename Arg2>
 struct MemberFunctionWrapper<Object, Ret (Object2::*)(Arg1, Arg2)>
 {
-	typedef std::function<Ret(Arg1, Arg2)> ReturnType;
+	using ReturnType = std::function<Ret (Arg1, Arg2)>;
 
 	static ReturnType Wrap(Object* obj, Ret (Object2::* fun)(Arg1, Arg2)) { return [=](Arg1 arg1, Arg2 arg2) { return (obj->*fun)(arg1, arg2); }; }
 };
@@ -435,7 +435,7 @@ struct MemberFunctionWrapper<Object, Ret (Object2::*)(Arg1, Arg2)>
 template<typename Object, typename Object2, typename Ret, typename Arg1, typename Arg2, typename Arg3>
 struct MemberFunctionWrapper<Object, Ret (Object2::*)(Arg1, Arg2, Arg3)>
 {
-	typedef std::function<Ret(Arg1, Arg2, Arg3)> ReturnType;
+	using ReturnType = std::function<Ret (Arg1, Arg2, Arg3)>;
 
 	static ReturnType Wrap(Object* obj, Ret (Object2::* fun)(Arg1, Arg2, Arg3)) { return [=](Arg1 arg1, Arg2 arg2, Arg3 arg3) { return (obj->*fun)(arg1, arg2, arg3); }; }
 };
@@ -443,7 +443,7 @@ struct MemberFunctionWrapper<Object, Ret (Object2::*)(Arg1, Arg2, Arg3)>
 template<typename Object, typename Object2, typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4>
 struct MemberFunctionWrapper<Object, Ret (Object2::*)(Arg1, Arg2, Arg3, Arg4)>
 {
-	typedef std::function<Ret(Arg1, Arg2, Arg3, Arg4)> ReturnType;
+	using ReturnType = std::function<Ret (Arg1, Arg2, Arg3, Arg4)>;
 
 	static ReturnType Wrap(Object* obj, Ret (Object2::* fun)(Arg1, Arg2, Arg3, Arg4)) { return [=](Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4) { return (obj->*fun)(arg1, arg2, arg3, arg4); }; }
 };
@@ -451,7 +451,7 @@ struct MemberFunctionWrapper<Object, Ret (Object2::*)(Arg1, Arg2, Arg3, Arg4)>
 template<typename Object, typename Object2, typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5>
 struct MemberFunctionWrapper<Object, Ret (Object2::*)(Arg1, Arg2, Arg3, Arg4, Arg5)>
 {
-	typedef std::function<Ret(Arg1, Arg2, Arg3, Arg4, Arg5)> ReturnType;
+	using ReturnType = std::function<Ret (Arg1, Arg2, Arg3, Arg4, Arg5)>;
 
 	static ReturnType Wrap(Object* obj, Ret (Object2::* fun)(Arg1, Arg2, Arg3, Arg4, Arg5)) { return [=](Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4, Arg5 arg5) { return (obj->*fun)(arg1, arg2, arg3, arg4, arg5); }; }
 };
@@ -459,7 +459,7 @@ struct MemberFunctionWrapper<Object, Ret (Object2::*)(Arg1, Arg2, Arg3, Arg4, Ar
 template<typename Object, typename Object2, typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5, typename Arg6>
 struct MemberFunctionWrapper<Object, Ret (Object2::*)(Arg1, Arg2, Arg3, Arg4, Arg5, Arg6)>
 {
-	typedef std::function<Ret(Arg1, Arg2, Arg3, Arg4, Arg5, Arg6)> ReturnType;
+	using ReturnType = std::function<Ret (Arg1, Arg2, Arg3, Arg4, Arg5, Arg6)>;
 
 	static ReturnType Wrap(Object* obj, Ret (Object2::* fun)(Arg1, Arg2, Arg3, Arg4, Arg5, Arg6)) { return [=](Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4, Arg5 arg5, Arg6 arg6) { return (obj->*fun)(arg1, arg2, arg3, arg4, arg5, arg6); }; }
 };

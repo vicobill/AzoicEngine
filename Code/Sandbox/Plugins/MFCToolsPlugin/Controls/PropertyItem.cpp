@@ -505,7 +505,7 @@ void CPropertyItem::ParseXmlNode(bool bRecursive /* =true  */)
 
 			XmlNodeRef child = m_node->getChild(i);
 			CPropertyItemPtr item = new CPropertyItem(m_propertyCtrl);
-			item->SetXmlNode(m_node->getChild(i));
+			item->SetXmlNode(child);
 			AddChild(item);
 			m_bExpandable = true;
 
@@ -2799,7 +2799,7 @@ void CPropertyItem::OnFileBrowseButton()
 		}
 	}
 
-	CString startPath = PathUtil::GetPathWithoutFilename(tempValue);
+	CString startPath = PathUtil::GetPathWithoutFilename(tempValue).c_str();
 
 	m_propertyCtrl->HideBitmapTooltip();
 

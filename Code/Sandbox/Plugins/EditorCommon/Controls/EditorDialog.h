@@ -23,20 +23,20 @@ public:
 	CEditorDialog(const QString& dialogNameId, QWidget* parent = nullptr, bool saveSize = true);
 
 	//! Convenience method to store shared properties in personalization manager
-	void AddPersonalizedSharedProperty(const QString& propName, std::function<QVariant()>& store, std::function<void(const QVariant&)>& restore);
+	void AddPersonalizedSharedProperty(const QString& propName, const std::function<QVariant()>& store, const std::function<void(const QVariant&)>& restore);
 	//! Convenience method to store project properties in personalization manager
-	void AddPersonalizedProjectProperty(const QString& propName, std::function<QVariant()>& store, std::function<void(const QVariant&)>& restore);
+	void AddPersonalizedProjectProperty(const QString& propName, const std::function<QVariant()>& store, const std::function<void(const QVariant&)>& restore);
 
 	//! Convenience method to store shared properties in personalization manager
 	template<typename Store, typename Restore>
-	void AddPersonalizedSharedProperty(const QString& propName, Store& store, Restore& restore)
+	void AddPersonalizedSharedProperty(const QString& propName, const Store& store, const Restore& restore)
 	{
 		AddPersonalizedSharedProperty(propName, function_cast<QVariant()>(store), function_cast<void(const QVariant&)>(restore));
 	}
 
 	//! Convenience method to store project properties in personalization manager
 	template<typename Store, typename Restore>
-	void AddPersonalizedProjectProperty(const QString& propName, Store& store, Restore& restore)
+	void AddPersonalizedProjectProperty(const QString& propName, const Store& store, const Restore& restore)
 	{
 		AddPersonalizedProjectProperty(propName, function_cast<QVariant()>(store), function_cast<void(const QVariant&)>(restore));
 	}

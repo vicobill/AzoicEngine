@@ -86,12 +86,12 @@ public:
 	{
 		// set timer if blinking mode
 		if (m_nTimerID <= 0 && (m_fBlinkText || m_fBlinkBk))
-			m_nTimerID = SetTimer(1, m_nDelay, NULL);
+			m_nTimerID = this->SetTimer(1, m_nDelay, NULL);
 	}
 	void KillBlinkTimer()
 	{
 		// reset timer
-		KillTimer(m_nTimerID);
+		this->KillTimer(m_nTimerID);
 		m_nTimerID = 0;
 		m_iBlinkPhase = 0;
 	}
@@ -194,8 +194,8 @@ template<class BASE_TYPE>
 void CColorCtrl<BASE_TYPE >::SetTextColor(COLORREF rgbText)
 {
 	m_rgbText = rgbText;
-	if (::IsWindow(m_hWnd))
-		Invalidate();
+	if (::IsWindow(this->m_hWnd))
+		this->Invalidate();
 }
 
 template<class BASE_TYPE>
@@ -210,8 +210,8 @@ void CColorCtrl<BASE_TYPE >::SetBkColor(COLORREF rgbBk)
 {
 	m_rgbBk = rgbBk;
 
-	if (::IsWindow(m_hWnd))
-		Invalidate();
+	if (::IsWindow(this->m_hWnd))
+		this->Invalidate();
 }
 
 template<class BASE_TYPE>
@@ -228,8 +228,8 @@ void CColorCtrl<BASE_TYPE >::SetBkPattern(UINT nBkID)
 	if (nBkID > 0)
 		m_bmpBk.LoadBitmap(nBkID);
 
-	if (::IsWindow(m_hWnd))
-		Invalidate();
+	if (::IsWindow(this->m_hWnd))
+		this->Invalidate();
 }
 
 template<class BASE_TYPE>
@@ -239,8 +239,8 @@ void CColorCtrl<BASE_TYPE >::SetBkPattern(HBITMAP hbmpBk)
 	if (hbmpBk != 0)
 		m_bmpBk.Attach(hbmpBk);
 
-	if (::IsWindow(m_hWnd))
-		Invalidate();
+	if (::IsWindow(this->m_hWnd))
+		this->Invalidate();
 }
 
 template<class BASE_TYPE>
@@ -272,8 +272,8 @@ void CColorCtrl<BASE_TYPE >::UseSolidColors(BOOL fSolid)
 {
 	m_fSolid = fSolid;
 
-	if (::IsWindow(m_hWnd))
-		Invalidate();
+	if (::IsWindow(this->m_hWnd))
+		this->Invalidate();
 }
 
 template<class BASE_TYPE>
@@ -289,13 +289,13 @@ void CColorCtrl<BASE_TYPE >::StartBlink(int iWho, UINT nDelay)
 		m_nDelay = nDelay;
 		if (m_nTimerID > 0)
 		{
-			ASSERT(::IsWindow(m_hWnd));
+			ASSERT(::IsWindow(this->m_hWnd));
 			// reset old timer if delay changed
 			KillBlinkTimer();
 		}
 	}
 	ASSERT(m_fBlinkText || m_fBlinkBk);
-	if (!::IsWindow(m_hWnd))
+	if (!::IsWindow(this->m_hWnd))
 		return;
 	// if no timer - set it
 	SetBlinkTimer();
@@ -311,10 +311,10 @@ void CColorCtrl<BASE_TYPE >::StopBlink(int iWho)
 
 	if (m_nTimerID > 0 && !m_fBlinkText && !m_fBlinkBk)
 	{
-		ASSERT(::IsWindow(m_hWnd));
+		ASSERT(::IsWindow(this->m_hWnd));
 		// stop timer if no blinking and repaint
 		KillBlinkTimer();
-		Invalidate();
+		this->Invalidate();
 	}
 }
 
@@ -404,7 +404,7 @@ HBRUSH CColorCtrl<BASE_TYPE >::CtlColor(CDC* pDC, UINT nCtlColor)
 template<class BASE_TYPE>
 HBRUSH CColorCtrl<BASE_TYPE >::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-	if (pWnd->m_hWnd == m_hWnd)
+	if (pWnd->m_hWnd == this->m_hWnd)
 		return BASE_TYPE::OnCtlColor(pDC, pWnd, nCtlColor); // for dialogs
 	return BASE_TYPE::OnCtlColor(pDC, this, nCtlColor);   // send reflect message
 }
@@ -431,7 +431,7 @@ void CColorCtrl<BASE_TYPE >::OnTimer(UINT_PTR nIDEvent)
 	{
 		// change blinking phase and repaint
 		m_iBlinkPhase = !m_iBlinkPhase;
-		Invalidate();
+		this->Invalidate();
 	}
 }
 
@@ -593,7 +593,7 @@ void CColorPushButton<BASE_TYPE >::SetToolTip(const char* tooltipText)
 		m_tooltip = new CDynamicToolTipCtrl;
 		m_tooltip->Create(this);
 		CRect rc;
-		GetClientRect(rc);
+		this->GetClientRect(rc);
 		m_tooltip->AddTool(this, tooltipText, rc, 1);
 	}
 	else
@@ -622,11 +622,11 @@ void CColorPushButton<BASE_TYPE >::SetIcon(HICON hIcon, int nIconAlign, bool bDr
 
 	// Get tool tip from title.
 	CString sCaption;
-	GetWindowText(sCaption);
+	this->GetWindowText(sCaption);
 	SetToolTip(sCaption);
 
 	ChangeStyle();
-	Invalidate(FALSE);
+	this->Invalidate(FALSE);
 };
 
 template<class BASE_TYPE>
@@ -635,8 +635,8 @@ void CColorPushButton<BASE_TYPE >::SetPushedBkColor(COLORREF rgbBk)
 	m_rgbPushedBk = rgbBk;
 	m_pushedBk.DeleteObject();
 	m_pushedBk.CreateSolidBrush(m_rgbPushedBk);
-	if (::IsWindow(m_hWnd))
-		Invalidate();
+	if (::IsWindow(this->m_hWnd))
+		this->Invalidate();
 }
 
 template<class BASE_TYPE>
@@ -650,7 +650,7 @@ BOOL CColorPushButton<BASE_TYPE >::PreTranslateMessage(MSG* pMsg)
 		if (m_bOwnerDraw && !m_hIcon)
 		{
 			ChangeStyle();
-			Invalidate(TRUE);
+			this->Invalidate(TRUE);
 		}
 	}
 
@@ -675,17 +675,17 @@ template<class BASE_TYPE>
 void CColorPushButton<BASE_TYPE >::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	BASE_TYPE::OnLButtonDown(nFlags, point);
-	if (GetParent())
-		GetParent()->SendMessage((UINT)WM_COMMAND, (WPARAM)MAKEWPARAM(GetDlgCtrlID(), BN_PUSHED), (LPARAM)m_hWnd);
+	if (this->GetParent())
+		this->GetParent()->SendMessage((UINT)WM_COMMAND, (WPARAM)MAKEWPARAM(this->GetDlgCtrlID(), BN_PUSHED), (LPARAM)this->m_hWnd);
 }
 
 template<class BASE_TYPE>
 void CColorPushButton<BASE_TYPE >::ChangeStyle()
 {
 	CString sClassName;
-	GetClassName(m_hWnd, sClassName.GetBuffer(10), 10);
+	this->GetClassName(this->m_hWnd, sClassName.GetBuffer(10), 10);
 	sClassName.ReleaseBuffer();
-	DWORD style = GetStyle();
+	DWORD style = this->GetStyle();
 	ASSERT(sClassName.CompareNoCase(_T("BUTTON")) == 0); // must be used only with buttons
 	ASSERT((style & (BS_BITMAP)) == 0);                  // dont supports bitmap buttons
 	//ASSERT((style & (BS_ICON|BS_BITMAP)) == 0); // dont supports icon/bitmap buttons
@@ -694,7 +694,7 @@ void CColorPushButton<BASE_TYPE >::ChangeStyle()
 		if (!m_hIcon)
 		{
 			m_bOwnerDraw = false;
-			ModifyStyle(0xf, BS_PUSHBUTTON);
+			this->ModifyStyle(0xf, BS_PUSHBUTTON);
 		}
 	}
 	if ((style & 0xf) == BS_PUSHBUTTON ||
@@ -703,7 +703,7 @@ void CColorPushButton<BASE_TYPE >::ChangeStyle()
 		if (m_hIcon)
 		{
 			m_bOwnerDraw = true;
-			ModifyStyle(0xf, BS_OWNERDRAW);
+			this->ModifyStyle(0xf, BS_OWNERDRAW);
 		}
 	}
 }
@@ -715,8 +715,8 @@ void CColorPushButton<BASE_TYPE >::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	CRect rc(lpDrawItemStruct->rcItem);
 	UINT state = lpDrawItemStruct->itemState;
 	CString sCaption;
-	GetWindowText(sCaption);
-	DWORD style = GetStyle();
+	this->GetWindowText(sCaption);
+	DWORD style = this->GetStyle();
 
 	CRect rcFocus(rc);
 	rcFocus.DeflateRect(4, 4);
@@ -760,7 +760,7 @@ void CColorPushButton<BASE_TYPE >::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	}
 
 	// fill background
-	HBRUSH brush = (HBRUSH)SendMessage(GetSysColor(COLOR_BTNFACE), (WPARAM)pDC->m_hDC, (LPARAM)m_hWnd);
+	HBRUSH brush = (HBRUSH)this->SendMessage(GetSysColor(COLOR_BTNFACE), (WPARAM)pDC->m_hDC, (LPARAM)this->m_hWnd);
 
 	if (state & ODS_SELECTED)
 	{

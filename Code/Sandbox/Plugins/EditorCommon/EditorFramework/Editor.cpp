@@ -169,7 +169,8 @@ void CEditor::InitMenuDesc()
 
 void CEditor::ForceRebuildMenu()
 {
-	m_pMenu->Build(MenuWidgetBuilders::CMenuBuilder(m_pPaneMenu));
+	auto builder = MenuWidgetBuilders::CMenuBuilder(m_pPaneMenu);
+	m_pMenu->Build(builder);
 }
 
 void CEditor::SetContent(QWidget* content)

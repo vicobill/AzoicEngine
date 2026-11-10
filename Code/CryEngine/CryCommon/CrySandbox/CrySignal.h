@@ -64,10 +64,10 @@ public:
 	CCrySignal();
 	~CCrySignal();
 
-	template<typename Object, typename MemberFunction, typename std::enable_if<SFuncInfo<MemberFunction>::isMemberFunction, int>::type* = 0>
+	template<typename Object, typename MemberFunction, typename std::enable_if<SFuncInfo<MemberFunction>::isMemberFunction, int>::type* = nullptr>
 	void Connect(Object* pObject, MemberFunction function, uintptr_t forceId = 0);
 
-	template<typename Function, typename std::enable_if<IsCallable<Function>::value, int>::type* = 0>
+	template<typename Function, typename std::enable_if<IsCallable<Function>::value, int>::type* = nullptr>
 	void Connect(const Function& function, uintptr_t id = 0);
 
 	void DisconnectObject(void* pObject);

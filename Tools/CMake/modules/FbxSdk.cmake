@@ -3,7 +3,9 @@ if(WINDOWS)
 	set_target_properties(FbxSdk PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${SDK_DIR}/FbxSdk/include")
 	set_target_properties(FbxSdk PROPERTIES INTERFACE_COMPILE_DEFINITIONS FBXSDK_NEW_API=1)
 
-	if (MSVC_VERSION GREATER 1900) # Visual Studio > 2015
+	if (MSVC_VERSION GREATER_EQUAL 1930) # Visual Studio 2022
+		set(FBX_SUBFOLDER vs2022)
+	elseif (MSVC_VERSION GREATER 1900) # Visual Studio > 2015
 		set(FBX_SUBFOLDER vs2015)
 	elseif (MSVC_VERSION EQUAL 1900) # Visual Studio 2015
 		set(FBX_SUBFOLDER vs2015)
@@ -27,4 +29,12 @@ if(WINDOWS)
 	set_target_properties(FbxSdk PROPERTIES
 		IMPORTED_LOCATION_RELEASE "${SDK_DIR}/FbxSdk/lib/${FBX_SUBFOLDER}/x64/release/libfbxsdk.dll"
 		IMPORTED_IMPLIB_RELEASE "${SDK_DIR}/FbxSdk/lib/${FBX_SUBFOLDER}/x64/release/libfbxsdk-md.lib")
+
+	if(FBX_SUBFOLDER STREQUAL "vs2022")
+		set_target_properties(FbxSdk PROPERTIES
+			IMPORTED_LINK_INTERFACE_LIBRARIES_DEBUG "${SDK_DIR}/FbxSdk/lib/${FBX_SUBFOLDER}/x64/debug/zlib-md.lib;${SDK_DIR}/FbxSdk/lib/${FBX_SUBFOLDER}/x64/debug/libxml2-md.lib;bcrypt"
+			IMPORTED_LINK_INTERFACE_LIBRARIES_PROFILE "${SDK_DIR}/FbxSdk/lib/${FBX_SUBFOLDER}/x64/release/zlib-md.lib;${SDK_DIR}/FbxSdk/lib/${FBX_SUBFOLDER}/x64/release/libxml2-md.lib;bcrypt"
+			IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "${SDK_DIR}/FbxSdk/lib/${FBX_SUBFOLDER}/x64/release/zlib-md.lib;${SDK_DIR}/FbxSdk/lib/${FBX_SUBFOLDER}/x64/release/libxml2-md.lib;bcrypt"
+		)
+	endif()
 endif()

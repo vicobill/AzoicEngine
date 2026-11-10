@@ -611,7 +611,7 @@ STrackLayout* HitTestTrack(STrackLayouts& tracks, const QPoint& point, bool bIgn
 }
 
 template<class Func>
-void ForEachTrack(STimelineTrack& track, Func& fun)
+void ForEachTrack(STimelineTrack& track, const Func& fun)
 {
 	fun(track);
 
@@ -623,7 +623,7 @@ void ForEachTrack(STimelineTrack& track, Func& fun)
 }
 
 template<class Func>
-void ForEachTrack(STimelineTrack& track, std::vector<STimelineTrack*>& parents, Func& fun)
+void ForEachTrack(STimelineTrack& track, std::vector<STimelineTrack*>& parents, const Func& fun)
 {
 	fun(track);
 
@@ -637,7 +637,7 @@ void ForEachTrack(STimelineTrack& track, std::vector<STimelineTrack*>& parents, 
 }
 
 template<class Func>
-void ForEachElement(STimelineTrack& track, Func& fun)
+void ForEachElement(STimelineTrack& track, const Func& fun)
 {
 	ForEachTrack(track, [&](STimelineTrack& subTrack)
 		{
@@ -649,7 +649,7 @@ void ForEachElement(STimelineTrack& track, Func& fun)
 }
 
 template<class Func>
-void ForEachElementWithIndex(STimelineTrack& track, Func& fun)
+void ForEachElementWithIndex(STimelineTrack& track, const Func& fun)
 {
 	ForEachTrack(track, [&](STimelineTrack& subTrack)
 		{
@@ -1081,7 +1081,8 @@ void UpdateClipLinesCache(STracksRenderCache& renderCache, const SElementLayout&
 {
 	float duration = element.elementRef.GetElement().clipAnimDuration;
 
-	float start = MIN(duration, MAX(0, element.elementRef.GetElement().clipAnimStart));
+	float animStart = element.elementRef.GetElement().clipAnimStart;
+	float start = MIN(duration, MAX(0, animStart));
 	float r = start / duration;
 
 	int x0L = rect.left();

@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include <QDockWidget>
+#include <QMainWindow>
+
 template<class Widget>
 class DockedWidget
 {

@@ -257,7 +257,7 @@ struct SCommandRegistry
 		const auto it = commands.find(commandId);
 		if (it != commands.cend())
 		{
-			string argsStr = commandStr.size() > commandId.size() + 1 ? commandStr.substr(commandId.size() + 1) : "";
+			string argsStr = commandStr.size() > commandId.size() + 1 ? commandStr.substr(commandId.size() + 1) : string();
 			return it->second(argsStr);
 		}
 		return false;

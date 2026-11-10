@@ -542,7 +542,7 @@ int CFunctionSerializationHelper::CFunctionList::SerializeGUID(
 	const int oldFunctionIdx)
 {
 	const bool bIsNpos = (oldFunctionIdx == CFunctionSerializationHelper::npos);
-	const string oldPrettyName = bIsNpos ? "" : m_functions[oldFunctionIdx].prettyName;
+	const string oldPrettyName = bIsNpos ? string() : m_functions[oldFunctionIdx].prettyName;
 
 	const CKeyValueStringList<CryGUID>::SSerializeResult serializeResult = m_functionsGuidList.SerializeByLabelForDisplayInDropDownList(archive, szName, szLabel, &validatorKey, oldPrettyName);
 	const int newFunctionIdx = serializeResult.newIndex - 1;	// careful: could become -2 if the drop-down-list has no entries ("I GUESS"!)

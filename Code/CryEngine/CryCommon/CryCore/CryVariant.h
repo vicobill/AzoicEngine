@@ -4,6 +4,7 @@
 
 #include <type_traits>
 #include <CryCore/StlUtils.h>
+#include <algorithm>
 
 // Based on C++17's std::variant interface: http://en.cppreference.com/w/cpp/utility/variant
 // Everything that would be in the 'std' namespace according to the standard was implemented in the 'stl' namespace.
@@ -119,7 +120,7 @@ typename std::add_pointer<const typename stl::variant_alternative<I, CryVariant<
 }
 
 template<class Visitor, class... Variants>
-auto visit(Visitor&& visitor, Variants&&... variants) -> typename std::result_of<Visitor(Variants&&...)>::type
+auto visit(Visitor&& visitor, Variants&&... variants) -> decltype(std::declval<Visitor>()(std::declval<Variants>()...))
 {
 	return visitor(variants...);
 }

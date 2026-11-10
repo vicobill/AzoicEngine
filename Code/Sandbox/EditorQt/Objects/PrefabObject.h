@@ -81,7 +81,7 @@ public:
 	virtual void       SetWorldPos(const Vec3& pos, int flags = 0) override;
 	virtual void       UpdatePivot(const Vec3& newWorldPivotPos) override;
 
-	virtual string     GetTypeDescription() const override { return m_pPrefabItem ? m_pPrefabItem->GetName() : ""; }
+	virtual string     GetTypeDescription() const override { return m_pPrefabItem ? m_pPrefabItem->GetName() : string(); }
 	virtual string     GetAssetPath() const override;
 
 	virtual XmlNodeRef Export(const string& levelPath, XmlNodeRef& xmlNode) override;

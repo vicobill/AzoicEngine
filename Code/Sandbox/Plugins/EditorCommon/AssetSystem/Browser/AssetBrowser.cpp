@@ -141,7 +141,7 @@ public:
 	template<typename TEvent>
 	bool Processed(const TEvent* pEvent)
 	{
-		return pEvent->isAccepted() || m_root.isNull() || indexAt(pEvent->pos()).isValid();
+		return pEvent->isAccepted() || m_root.isNull() || this->indexAt(pEvent->pos()).isValid();
 	}
 
 	template<typename TEvent>
@@ -157,7 +157,7 @@ public:
 
 	virtual void dragEnterEvent(QDragEnterEvent* pEvent) override
 	{
-		CDragDropData::ShowDragText(qApp->widgetAt(QCursor::pos()), tr("Invalid operation"));
+		CDragDropData::ShowDragText(qApp->widgetAt(QCursor::pos()), ("Invalid operation"));
 
 		TView::dragEnterEvent(pEvent);
 
@@ -1704,7 +1704,8 @@ void CAssetBrowser::CreateContextMenu(bool isFolderView /*= false*/)
 	}
 
 	QMenu menu;
-	abstractMenu.Build(MenuWidgetBuilders::CMenuBuilder(&menu));
+	auto builder = MenuWidgetBuilders::CMenuBuilder(&menu);
+	abstractMenu.Build(builder);
 
 	if (menu.actions().count() > 0)
 	{

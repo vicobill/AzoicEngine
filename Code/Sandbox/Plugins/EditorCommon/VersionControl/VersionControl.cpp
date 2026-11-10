@@ -16,7 +16,7 @@ static const string VCS_NONE = "None";
 
 struct EDITOR_COMMON_API SVersionControlPreferences : public SPreferencePage
 {
-	SVersionControlPreferences::SVersionControlPreferences()
+	SVersionControlPreferences()
 		: SPreferencePage("General", "Version Control/General")
 		, vcsName(VCS_NONE)
 	{}

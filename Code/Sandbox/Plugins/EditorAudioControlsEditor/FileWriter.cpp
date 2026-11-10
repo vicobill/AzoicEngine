@@ -244,7 +244,7 @@ void WriteItem(CAsset* const pAsset, string const& path, LibraryStorage& library
 			for (size_t i = 0; i < itemCount; ++i)
 			{
 				// Use forward slash only to ensure cross platform compatibility.
-				string newPath = path.empty() ? "" : path + "/";
+				string newPath = path.empty() ? string() : path + "/";
 				newPath += pAsset->GetName();
 				WriteItem(pAsset->GetChild(i), newPath, library);
 			}

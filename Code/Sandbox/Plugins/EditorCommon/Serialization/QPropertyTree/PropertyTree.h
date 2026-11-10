@@ -148,9 +148,9 @@ private:
 	QIcon GetDragHandleIcon() const     { return m_dragHandleIcon; }
 	void  SetDragHandleIcon(QIcon icon) { m_dragHandleIcon = icon; }
 
-	typedef std::vector<yasli::Object>                       Objects;
+	using Objects = std::vector<yasli::Object>;
 	Objects                                   m_attached;
-	typedef std::vector<_smart_ptr<PropertyTree::CRowModel>> Models;
+	using Models = std::vector<_smart_ptr<PropertyTree::CRowModel>>;
 	Models                                    m_models;
 	yasli::Context*                           m_pArchiveContext;
 	_smart_ptr<PropertyTree::CRowModel>       m_pRoot;

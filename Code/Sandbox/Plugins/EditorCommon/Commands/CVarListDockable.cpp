@@ -464,7 +464,7 @@ CCVarBrowser::CCVarBrowser(QWidget* pParent /* = nullptr*/)
 {
 	const bool bFavoritesOnly = GetIEditor()->GetPersonalizationManager()->GetProperty("ConsoleVariables", "FavoritesOnly").toBool();
 
-	const CFavoriteFilterProxy::BehaviorFlags behavior = CFavoriteFilterProxy::AcceptIfChildMatches | CFavoriteFilterProxy::AcceptIfParentMatches;
+	const CFavoriteFilterProxy::BehaviorFlags behavior = CFavoriteFilterProxy::BehaviorFlags(CFavoriteFilterProxy::AcceptIfChildMatches | CFavoriteFilterProxy::AcceptIfParentMatches);
 	m_pFilterProxy = std::unique_ptr<CFavoriteFilterProxy>(new CFavoriteFilterProxy(behavior, bFavoritesOnly));
 	m_pFilterProxy->setSourceModel(m_pModel.get());
 	m_pFilterProxy->setSortRole(static_cast<int>(CCVarModel::Roles::SortRole));

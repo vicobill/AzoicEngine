@@ -140,7 +140,8 @@ void ListSelectionDialog::SetColumnWidth(int column, int width)
 
 void ListSelectionDialog::AddRow(const char* name)
 {
-	AddRow(name, CryIcon());
+	QIcon icon = CryIcon();
+	AddRow(name, icon);
 }
 
 void ListSelectionDialog::AddRow(const char* name, QIcon& icon)

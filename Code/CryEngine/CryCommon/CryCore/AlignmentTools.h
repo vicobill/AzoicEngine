@@ -111,7 +111,7 @@ template<size_t Length, size_t Align = TARGET_DEFAULT_ALIGN, bool bFallback = De
 struct SAlignedStorage
 {
 	typedef typename std::aligned_storage<Length, Align>::type type;
-	static_assert(sizeof(type) >= Length && std::alignment_of<type>::value >= Align && std::is_pod<type>::value, "Failed to provide requested alignment");
+	static_assert(sizeof(type) >= Length && std::alignment_of<type>::value >= Align && std::is_trivial<type>::value, "Failed to provide requested alignment");
 };
 template<size_t Length, size_t Align>
 struct SAlignedStorage<Length, Align, true>
@@ -121,7 +121,7 @@ struct SAlignedStorage<Length, Align, true>
 		char storage[Length];
 		typename Detail::SAlignedStorageHelper<Align>::type helper;
 	} type;
-	static_assert(sizeof(type) >= Length && std::alignment_of<type>::value >= Align && std::is_pod<type>::value, "Failed to provide requested alignment");
+	static_assert(sizeof(type) >= Length && std::alignment_of<type>::value >= Align && std::is_trivial<type>::value, "Failed to provide requested alignment");
 };
 
 //! Load RealType from unaligned memory using some blittable type.

@@ -272,7 +272,7 @@ void CResourcePicker::Serialize(Serialization::IArchive& ar)
 {
 	string lineEditText = m_pLineEdit->text().toStdString().c_str();
 	ar(lineEditText, "text", "Text");
-	QString newLineEditTextValue = lineEditText;
+	QString newLineEditTextValue = QString(lineEditText);
 
 	if (newLineEditTextValue != m_previousValue && ar.isInput())
 	{

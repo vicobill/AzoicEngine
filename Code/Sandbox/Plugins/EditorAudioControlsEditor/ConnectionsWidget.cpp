@@ -341,7 +341,7 @@ void CConnectionsWidget::RenameControl(string const& newName)
 {
 	string const typeName = AssetUtils::GetTypeName(m_pControl->GetType());
 	string const& controlName = m_pControl->GetName();
-	QString const text = "Are you sure you want to rename the " + typeName + " \"" + controlName + "\" to \"" + newName + "\"?";
+	QString const text = QtUtil::ToQString("Are you sure you want to rename the " + typeName + " \"" + controlName + "\" to \"" + newName + "\"?");
 
 	auto const messageBox = new CQuestionDialog();
 	messageBox->SetupQuestion(g_szEditorName, text);
